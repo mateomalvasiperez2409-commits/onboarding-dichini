@@ -1,0 +1,3146 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onboarding · Bot WhatsApp · Dichini Events × SolvAI</title>
+<style>
+  :root {
+    /* Brand SolvAI */
+    --brand: #4B4AE3;
+    --brand-dark: #3A39B8;
+    --brand-soft: #EEEEFB;
+    /* Acento cálido para Dichini (eventos) */
+    --warm: #D4A574;
+    --warm-soft: #FBF5EC;
+    /* Estado */
+    --ink: #0F1115;
+    --ink-2: #2A2D34;
+    --muted: #6B7280;
+    --line: #E5E7EB;
+    --line-2: #F1F2F4;
+    --bg: #FAFAFB;
+    --card: #FFFFFF;
+    --ok: #16A34A;
+    --warn: #D97706;
+    --danger: #DC2626;
+    /* Criticidad */
+    --crit-red: #DC2626;
+    --crit-yellow: #D97706;
+    --crit-gray: #9CA3AF;
+    --shadow-sm: 0 1px 2px rgba(15,17,21,0.04), 0 1px 1px rgba(15,17,21,0.03);
+    --shadow-md: 0 4px 12px rgba(15,17,21,0.06), 0 2px 4px rgba(15,17,21,0.04);
+    --shadow-lg: 0 12px 32px rgba(15,17,21,0.08), 0 4px 8px rgba(15,17,21,0.04);
+    --radius: 10px;
+    --radius-lg: 14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== TOPBAR ===== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: saturate(180%) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 12px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .logo img {
+    height: 36px;
+    width: auto;
+    display: block;
+  }
+  .logo-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--line);
+    margin: 0 4px;
+  }
+  .logo-text {
+    font-size: 14px;
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+  .logo-text small {
+    color: var(--muted);
+    font-weight: 400;
+    display: block;
+    font-size: 11px;
+    margin-top: 1px;
+  }
+
+  .progress-wrap {
+    flex: 1;
+    max-width: 420px;
+    margin: 0 16px;
+  }
+  .progress-bar {
+    height: 6px;
+    background: var(--line-2);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--brand) 0%, var(--warm) 100%);
+    width: 0%;
+    transition: width 0.4s ease;
+    border-radius: 99px;
+  }
+  .progress-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .progress-label strong { color: var(--ink-2); font-weight: 600; }
+
+  .save-status {
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .save-status::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--ok);
+    border-radius: 50%;
+  }
+
+  /* ===== LAYOUT ===== */
+  .layout {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 32px 28px 120px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    position: sticky;
+    top: 90px;
+    align-self: start;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+  .nav-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--muted);
+    font-weight: 600;
+    padding: 0 12px 10px;
+  }
+  .nav-list { list-style: none; }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--ink-2);
+    font-size: 14px;
+    transition: all 0.15s ease;
+    margin-bottom: 2px;
+  }
+  .nav-item:hover { background: var(--line-2); }
+  .nav-item.active {
+    background: var(--brand-soft);
+    color: var(--brand-dark);
+    font-weight: 600;
+  }
+  .nav-num {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    background: var(--line-2);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+  .nav-item.active .nav-num {
+    background: var(--brand);
+    color: #fff;
+  }
+  .nav-item.done .nav-num {
+    background: var(--ok);
+    color: #fff;
+  }
+  .nav-item.done .nav-num::after { content: '✓'; }
+  .nav-item.done .nav-num span { display: none; }
+
+  .nav-hint {
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: auto;
+    padding-left: 8px;
+  }
+
+  /* ===== CONTENT ===== */
+  .content { min-width: 0; }
+  .section {
+    display: none;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 36px 40px;
+    box-shadow: var(--shadow-sm);
+    animation: fadeIn 0.3s ease;
+  }
+  .section.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .section-eyebrow {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--brand);
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-eyebrow .time-pill {
+    background: var(--warm-soft);
+    color: #92591D;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 11px;
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: 500;
+  }
+  .section-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.4px;
+    margin-bottom: 8px;
+  }
+  .section-desc {
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 640px;
+    line-height: 1.55;
+  }
+
+  /* ===== FIELDS ===== */
+  .field { margin-bottom: 22px; }
+  .field-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .field-label .req { color: var(--brand); margin-left: 2px; }
+  .crit {
+    flex-shrink: 0;
+    font-size: 12px;
+    padding: 1px 8px;
+    border-radius: 99px;
+    font-weight: 600;
+    margin-top: 1px;
+    letter-spacing: 0.3px;
+  }
+  .crit-red { background: #FEE2E2; color: #991B1B; }
+  .crit-yellow { background: #FEF3C7; color: #92400E; }
+  .crit-gray { background: #F3F4F6; color: #4B5563; }
+
+  .field-help {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  input[type="text"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="email"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 11px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(75,74,227,0.12);
+  }
+  textarea {
+    resize: vertical;
+    min-height: 90px;
+    line-height: 1.55;
+  }
+  textarea.large { min-height: 160px; }
+  textarea.xl { min-height: 220px; }
+  textarea.chat {
+    min-height: 200px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    background: #FAFAFB;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .field-row-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* Checkbox / Radio groups */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .options.inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    background: #fff;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .option:hover { border-color: #C9CAD3; background: #FCFCFD; }
+  .option input { margin-top: 3px; accent-color: var(--brand); cursor: pointer; flex-shrink: 0; }
+  .option:has(input:checked) {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+  }
+
+  /* Escape: "no sé, decidilo vos Mateo" */
+  .escape-option {
+    border-style: dashed !important;
+    color: var(--muted);
+  }
+  .escape-option:has(input:checked) {
+    background: var(--warm-soft);
+    border-color: var(--warm) !important;
+    border-style: solid !important;
+    color: #78350F;
+  }
+
+  /* Repeatable items */
+  .repeater { display: flex; flex-direction: column; gap: 12px; }
+  .repeater-item {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px;
+    position: relative;
+  }
+  .repeater-item .field-row,
+  .repeater-item .field-row-3 { gap: 12px; }
+  .repeater-item .field { margin-bottom: 12px; }
+  .repeater-item .field:last-child { margin-bottom: 0; }
+  .repeater-index {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .remove-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 18px;
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: grid;
+    place-items: center;
+  }
+  .remove-btn:hover { background: #FEE2E2; color: var(--danger); }
+  .add-btn {
+    background: transparent;
+    color: var(--brand);
+    border: 1px dashed var(--brand);
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: inherit;
+  }
+  .add-btn:hover { background: var(--brand-soft); }
+
+  /* Section nav buttons */
+  .section-nav {
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line-2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .btn {
+    padding: 11px 20px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary {
+    background: var(--brand);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--brand-dark); }
+  .btn-secondary {
+    background: #fff;
+    color: var(--ink-2);
+    border: 1px solid var(--line);
+  }
+  .btn-secondary:hover { border-color: #C9CAD3; background: var(--bg); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Privacy note */
+  .privacy-note {
+    background: var(--brand-soft);
+    border: 1px solid #D4D3FA;
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 12px;
+  }
+  .privacy-note-icon {
+    width: 22px; height: 22px;
+    background: var(--brand);
+    color: #fff;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  /* Info block (cálido) */
+  .info-block {
+    background: var(--warm-soft);
+    border-left: 3px solid var(--warm);
+    padding: 14px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #78350F;
+    margin-bottom: 20px;
+    line-height: 1.55;
+  }
+  .info-block strong { color: #92400E; }
+  .info-block em { font-style: italic; }
+
+  /* Audio upload block */
+  .audio-block {
+    background: linear-gradient(135deg, var(--warm-soft) 0%, #FFF8EE 100%);
+    border: 2px dashed var(--warm);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+  .audio-block-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #78350F;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .audio-block-desc {
+    font-size: 13px;
+    color: #92591D;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  .audio-instructions {
+    background: rgba(255,255,255,0.6);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: #78350F;
+    line-height: 1.5;
+  }
+
+  /* Welcome screen */
+  .welcome-card {
+    background: linear-gradient(135deg, var(--brand) 0%, #6B6AFF 100%);
+    color: #fff;
+    border-radius: var(--radius-lg);
+    padding: 32px 36px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .welcome-card::before {
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+  }
+  .welcome-card h2 {
+    font-size: 22px;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .welcome-card p {
+    font-size: 14px;
+    line-height: 1.6;
+    opacity: 0.95;
+    position: relative;
+    z-index: 1;
+  }
+  .welcome-card p + p { margin-top: 10px; }
+
+  /* Stats inline */
+  .quick-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--brand);
+    letter-spacing: -0.5px;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  /* Export modal */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,17,21,0.65);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-backdrop.active { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 16px;
+    max-width: 580px;
+    width: 100%;
+    padding: 32px;
+    box-shadow: var(--shadow-lg);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+  .modal p {
+    color: var(--muted);
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .modal-actions .btn { flex: 1; justify-content: center; min-width: 140px; }
+
+  .completion-summary {
+    background: var(--bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+  .completion-summary .row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    color: var(--ink-2);
+  }
+  .completion-summary .row strong { color: var(--ink); }
+  .completion-summary .row.warn strong { color: var(--warn); }
+  .completion-summary .row.ok strong { color: var(--ok); }
+
+  /* Floating export */
+  .floating-export {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 90;
+    background: var(--ink);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 99px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    border: none;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.15s ease;
+  }
+  .floating-export:hover { transform: translateY(-2px); }
+
+  /* Lista FAQ */
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .faq-item {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+  }
+  .faq-question {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .faq-question::before {
+    content: '?';
+    width: 20px; height: 20px;
+    background: var(--brand);
+    color: #fff;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .faq-item textarea {
+    min-height: 70px;
+    background: #fff;
+  }
+
+  /* Legend de criticidad */
+  .crit-legend {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 24px;
+    font-size: 13px;
+  }
+  .crit-legend-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .crit-legend-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .crit-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; padding: 20px 16px 120px; gap: 16px; }
+    .sidebar { position: static; max-height: none; padding-bottom: 8px; }
+    .nav-list { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 8px; }
+    .nav-item { flex-shrink: 0; white-space: nowrap; }
+    .nav-hint { display: none; }
+    .section { padding: 24px 20px; }
+    .field-row, .field-row-3 { grid-template-columns: 1fr; }
+    .quick-stats { grid-template-columns: 1fr; }
+    .topbar-inner { padding: 10px 16px; flex-wrap: wrap; }
+    .progress-wrap { width: 100%; margin: 8px 0 0; max-width: none; flex-basis: 100%; }
+    .save-status { font-size: 11px; }
+    .section-nav { flex-direction: column-reverse; align-items: stretch; }
+    .section-nav .btn { width: 100%; justify-content: center; }
+    .floating-export { bottom: 16px; right: 16px; padding: 10px 16px; font-size: 13px; }
+    .modal { padding: 24px 20px; }
+    .crit-legend-items { flex-direction: column; gap: 6px; }
+  }
+
+  @media (max-width: 480px) {
+    .section-title { font-size: 22px; }
+    .welcome-card { padding: 24px 20px; }
+    .welcome-card h2 { font-size: 19px; }
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo" href="#">
+      <img src="data:image/png;base64,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" alt="SolvAI">
+      <span class="logo-divider"></span>
+      <span class="logo-text">
+        Onboarding Bot WhatsApp
+        <small>para Dichini Events Studio</small>
+      </span>
+    </a>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-label">
+        <span>Progreso</span>
+        <span><strong id="progressPct">0%</strong> · <span id="progressCount">0/68</span></span>
+      </div>
+    </div>
+    <div class="save-status" id="saveStatus">Guardado automáticamente</div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <div class="nav-title">Secciones</div>
+    <ul class="nav-list" id="navList">
+      <li class="nav-item active" data-section="0"><span class="nav-num"><span>0</span></span> Bienvenida <span class="nav-hint">1 min</span></li>
+      <li class="nav-item" data-section="1"><span class="nav-num"><span>1</span></span> Tu negocio <span class="nav-hint">3 min</span></li>
+      <li class="nav-item" data-section="2"><span class="nav-num"><span>2</span></span> Tu voz <span class="nav-hint">6 min</span></li>
+      <li class="nav-item" data-section="3"><span class="nav-num"><span>3</span></span> Tus clientes <span class="nav-hint">4 min</span></li>
+      <li class="nav-item" data-section="4"><span class="nav-num"><span>4</span></span> Precios <span class="nav-hint">6 min</span></li>
+      <li class="nav-item" data-section="5"><span class="nav-num"><span>5</span></span> Preguntas frecuentes <span class="nav-hint">7 min</span></li>
+      <li class="nav-item" data-section="6"><span class="nav-num"><span>6</span></span> Cómo vendés <span class="nav-hint">5 min</span></li>
+      <li class="nav-item" data-section="7"><span class="nav-num"><span>7</span></span> Reglas del bot <span class="nav-hint">4 min</span></li>
+      <li class="nav-item" data-section="8"><span class="nav-num"><span>8</span></span> Cobranzas y postventa <span class="nav-hint">4 min</span></li>
+      <li class="nav-item" data-section="9"><span class="nav-num"><span>9</span></span> Mensajes proactivos <span class="nav-hint">3 min</span></li>
+      <li class="nav-item" data-section="10"><span class="nav-num"><span>10</span></span> Copiloto para vos <span class="nav-hint">3 min</span></li>
+      <li class="nav-item" data-section="11"><span class="nav-num"><span>11</span></span> Cierre <span class="nav-hint">2 min</span></li>
+    </ul>
+  </aside>
+
+  <!-- ===== CONTENT ===== -->
+  <main class="content">
+
+    <!-- ============================================================ -->
+    <!-- SECCIÓN 0: BIENVENIDA                                          -->
+    <!-- ============================================================ -->
+    <section class="section active" data-section="0">
+      <div class="section-header">
+        <div class="section-eyebrow">
+          Sección 0 de 11 · Bienvenida
+          <span class="time-pill">⏱ 1 min de lectura</span>
+        </div>
+        <h1 class="section-title">Hola Ori 👋 Bienvenida</h1>
+        <p class="section-desc">Esto es lo que vamos a hacer juntas para que tu bot de WhatsApp conteste como vos.</p>
+      </div>
+
+      <div class="welcome-card">
+        <h2>¿Qué es esto?</h2>
+        <p>Este es el cuestionario para que el bot que estamos armándote conozca tu negocio, tu forma de hablar y tu manera de vender. Cuando lo termines, voy a tener todo lo que necesito para que el bot conteste a tus clientes <strong>como si fueras vos misma escribiendo</strong>.</p>
+        <p>No hace falta que sepas nada de tecnología. Solo contame cómo trabajás vos.</p>
+      </div>
+
+      <div class="quick-stats">
+        <div class="stat-card">
+          <div class="stat-num">~45</div>
+          <div class="stat-label">Minutos total</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">11</div>
+          <div class="stat-label">Secciones</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Guardado solo</div>
+        </div>
+      </div>
+
+      <div class="privacy-note">
+        <span class="privacy-note-icon">i</span>
+        <div>
+          <strong>Tranqui que se guarda solo.</strong> Todo lo que vayas escribiendo queda guardado en tu celu/compu. Podés cerrar y volver cuando quieras, no se pierde nada. Cuando termines, hacés clic en <em>"Exportar respuestas"</em> y me mandás el archivo por WhatsApp.
+        </div>
+      </div>
+
+      <div class="info-block">
+        <strong>💡 Consejo:</strong> hacelo de a poquito, entre evento y evento. <em>5-10 minutos por vez</em> está perfecto. Si una pregunta te traba, salteala — al final podés volver. Y si algo no sabés cómo contestar, hay siempre una opción <em>"No sé, decidilo vos Mateo"</em>.
+        <br><br>
+        <strong>📱 Importante:</strong> donde te pida un audio o una captura, mandámelo crudo. <em>No te pongas a tachar números ni nombres</em> — eso lo limpio yo después. Vos no perdés tiempo en eso.
+      </div>
+
+      <div class="crit-legend">
+        <div class="crit-legend-title">Cómo leer las etiquetas de las preguntas</div>
+        <div class="crit-legend-items">
+          <div class="crit-legend-item"><span class="crit crit-red">🔴 Clave</span> Sin esto el bot no arranca</div>
+          <div class="crit-legend-item"><span class="crit crit-yellow">🟡 Mejora mucho</span> Lo hace más copado</div>
+          <div class="crit-legend-item"><span class="crit crit-gray">⚪ Después</span> Opcional, para fase 2</div>
+        </div>
+      </div>
+
+      <div class="section-nav">
+        <button class="btn btn-secondary" disabled>← Anterior</button>
+        <button class="btn btn-primary" onclick="goToSection(1)">Empezar → Sección 1: Tu negocio</button>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCIÓN 1: DATOS RÁPIDOS DEL NEGOCIO                          -->
+    <!-- ============================================================ -->
+    <section class="section" data-section="1">
+      <div class="section-header">
+        <div class="section-eyebrow">
+          Sección 1 de 11 · Tu negocio
+          <span class="time-pill">⏱ 3 min · 6 preguntas</span>
+        </div>
+        <h1 class="section-title">Datos rápidos de Dichini</h1>
+        <p class="section-desc">Lo básico para arrancar. Si algo no aplica o no estás segura, dejalo en blanco.</p>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          1. ¿Cómo querés que el bot se presente?
+        </label>
+        <div class="field-help">¿Querés que diga "Soy de Dichini", "Soy Ori", "Soy el asistente de Dichini"? Lo que se sienta más vos.</div>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="bot_presentacion" value="Soy Oriana / Ori"><span>"Hola, soy Ori 💛" — habla como si fueras vos directamente</span></label>
+          <label class="option"><input type="radio" data-key="bot_presentacion" value="Soy de Dichini"><span>"Hola, soy de Dichini Events" — habla en nombre del estudio</span></label>
+          <label class="option"><input type="radio" data-key="bot_presentacion" value="Asistente de Oriana"><span>"Hola, soy el asistente de Ori, ahora la llamo" — se identifica como asistente</span></label>
+          <label class="option escape-option"><input type="radio" data-key="bot_presentacion" value="DECIDILO_MATEO"><span>No sé, decidilo vos Mateo</span></label>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label">
+            <span class="crit crit-red">🔴 Clave</span>
+            2. Tu WhatsApp
+          </label>
+          <input type="tel" data-key="oriana_wpp" placeholder="+54 9 387 ...">
+          <div class="field-help">El que usás vos día a día.</div>
+        </div>
+        <div class="field">
+          <label class="field-label">
+            <span class="crit crit-red">🔴 Clave</span>
+            3. WhatsApp del bot
+          </label>
+          <input type="tel" data-key="bot_wpp" placeholder="+54 9 387 ...">
+          <div class="field-help">¿Va a usar tu mismo número o uno nuevo? Si no lo decidiste, escribí "todavía no sé".</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          4. Instagram del estudio
+        </label>
+        <input type="text" data-key="instagram" placeholder="@dichini.events" value="@dichini.events">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label">
+            <span class="crit crit-yellow">🟡 Mejora mucho</span>
+            5. Horarios en que vos atendés
+          </label>
+          <input type="text" data-key="horario_oriana" placeholder="Ej: Lun a Vie de 10 a 20, sábados a la mañana">
+          <div class="field-help">El bot va a saber cuándo podés contestar y cuándo va a tener que cubrirte.</div>
+        </div>
+        <div class="field">
+          <label class="field-label">
+            <span class="crit crit-yellow">🟡 Mejora mucho</span>
+            6. ¿Hay días/horas donde NO querés que el bot conteste solo?
+          </label>
+          <input type="text" data-key="horario_no_bot" placeholder='Ej: "Domingos no, después de las 22 no"'>
+          <div class="field-help">Para que el bot avise "te respondo mañana" en lugar de inventar.</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          7. ¿Quiénes te ayudan en los eventos? (equipo / freelancers)
+        </label>
+        <div class="field-help">Para que el bot sepa a quién mencionar si un cliente pregunta "¿quién va a decorar?". Solo nombre y qué hacen. Sin datos sensibles.</div>
+        <div class="repeater" id="rep-equipo" data-key="equipo_personas">
+          <!-- items dinámicos -->
+        </div>
+        <button class="add-btn" type="button" onclick="addRepeaterItem('equipo')" style="margin-top: 10px;">+ Agregar persona</button>
+      </div>
+
+      <div class="section-nav">
+        <button class="btn btn-secondary" onclick="goToSection(0)">← Volver</button>
+        <button class="btn btn-primary" onclick="goToSection(2)">Siguiente: Tu voz →</button>
+      </div>
+    </section>
+    <!-- ============================================================ -->
+    <!-- SECCIÓN 2: TU VOZ Y FORMA DE HABLAR                            -->
+    <!-- ============================================================ -->
+    <section class="section" data-section="2">
+      <div class="section-header">
+        <div class="section-eyebrow">
+          Sección 2 de 11 · Tu voz · ⚡ Lo más importante
+          <span class="time-pill">⏱ 6 min · 9 preguntas</span>
+        </div>
+        <h1 class="section-title">Cómo hablás vos</h1>
+        <p class="section-desc">Esta es la sección clave. El bot va a aprender a sonar como vos. Cuanto más natural y real seas acá, mejor te va a clonar.</p>
+      </div>
+
+      <div class="info-block">
+        <strong>🎤 Tip de oro:</strong> donde podás, mandame <em>audios reales</em> en vez de escribir. Hablás más natural y captura mejor tu forma de hablar. Si no podés grabar audio acá, abrime el WhatsApp y mandámelos directo, después yo los pego.
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-block-title">🎤 Audio 1 — Saludo a una mamá</div>
+        <div class="audio-block-desc">Imaginate que llega un mensaje de una mamá preguntando por un cumple de su hijo. Mandame <strong>un audio (30 seg)</strong> saludándola y arrancando la conversación como lo harías de verdad.</div>
+        <div class="audio-instructions">
+          📱 Grabalo en tu WhatsApp y mandámelo por privado, o escribilo abajo si preferís texto:
+        </div>
+        <textarea data-key="audio_saludo_mama_texto" placeholder='Si preferís escribirlo: "Hola Maru!! Qué divino, contame todo, cuántos años cumple tu hijo? 🎈"' style="margin-top: 10px;"></textarea>
+        <label class="option" style="margin-top: 10px;">
+          <input type="checkbox" data-key="audio_mama_enviado" value="enviado">
+          <span>✅ Ya mandé el audio por WhatsApp</span>
+        </label>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-block-title">🎤 Audio 2 — Saludo a una empresa</div>
+        <div class="audio-block-desc">Ahora imaginate que escribe alguien de Recursos Humanos de un banco para organizar un brindis de fin de año. Mandame <strong>un audio (30 seg)</strong> arrancando esa conversación.</div>
+        <div class="audio-instructions">
+          📱 La idea es comparar este audio con el anterior para ver cómo cambiás el tono según el cliente.
+        </div>
+        <textarea data-key="audio_saludo_empresa_texto" placeholder='Si preferís escribirlo: "Buenas tardes! Gracias por escribirnos. ¿Para qué fecha estaban pensando el evento?"' style="margin-top: 10px;"></textarea>
+        <label class="option" style="margin-top: 10px;">
+          <input type="checkbox" data-key="audio_empresa_enviado" value="enviado">
+          <span>✅ Ya mandé el audio por WhatsApp</span>
+        </label>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          1. ¿Cómo te despedís de un cliente?
+        </label>
+        <textarea data-key="despedida" placeholder='Ej: "Cualquier cosa me decís 💛 Beso!" o "Te aviso apenas tenga novedad, gracias mil"'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          2. 5 frases / palabras que usás SIEMPRE
+        </label>
+        <textarea data-key="frases_si" placeholder='Ej:
+- "Divino"
+- "Te cuento"
+- "Hermoso"
+- "Una genia"
+- "💛" (este emoji)'></textarea>
+        <div class="field-help">Esas muletillas tuyas que el bot tiene que sonar a vos. Pueden ser emojis también.</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          3. 3 frases que NUNCA dirías
+        </label>
+        <textarea data-key="frases_no" placeholder='Ej:
+- "Estimado cliente"
+- "Su consulta es muy importante para nosotros"
+- "Quedamos a su disposición"'></textarea>
+        <div class="field-help">Cosas que te suenan robóticas, falsas o que no van con tu onda.</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          4. ¿Tuteás siempre o tratás de "usted" a veces?
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="trato" value="Siempre vos / tutear"><span>Siempre "vos" — onda relajada con todos</span></label>
+          <label class="option"><input type="radio" data-key="trato" value="Usted a corporativos, vos a familias"><span>"Usted" con corporativos / mayores, "vos" con familias y mismo edad</span></label>
+          <label class="option"><input type="radio" data-key="trato" value="Empiezo de usted, después vos"><span>Arranco con "usted", si veo que se relajan paso a "vos"</span></label>
+          <label class="option escape-option"><input type="radio" data-key="trato" value="DECIDILO_MATEO"><span>No sé, decidilo vos Mateo</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          5. Tu uso de emojis
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="emojis" value="Muchos, soy 💛🎈✨"><span>Uso muchos — los emojis son parte de mi onda 💛🎈✨</span></label>
+          <label class="option"><input type="radio" data-key="emojis" value="Algunos, los justos"><span>Uso algunos, los justos — 1 o 2 por mensaje, no más</span></label>
+          <label class="option"><input type="radio" data-key="emojis" value="Pocos, según el cliente"><span>Depende del cliente: con familias sí, con empresas no</span></label>
+          <label class="option"><input type="radio" data-key="emojis" value="Casi ninguno"><span>Casi no uso emojis</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          6. ¿Cuáles son tus emojis favoritos? (los que más usás)
+        </label>
+        <input type="text" data-key="emojis_favoritos" placeholder="Ej: 💛 ✨ 🎈 🥳 🌸">
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          7. ¿Cómo te llamás "para los clientes"?
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="como_te_llaman" value="Ori"><span>Ori</span></label>
+          <label class="option"><input type="radio" data-key="como_te_llaman" value="Oriana"><span>Oriana</span></label>
+          <label class="option"><input type="radio" data-key="como_te_llaman" value="Ambos según cliente"><span>Las dos según el cliente</span></label>
+        </div>
+      </div>
+
+      <div class="audio-block" style="background: linear-gradient(135deg, #EEEEFB 0%, #F7F7FD 100%); border-color: var(--brand);">
+        <div class="audio-block-title" style="color: var(--brand-dark);">📸 Capturas reales (vale ORO)</div>
+        <div class="audio-block-desc" style="color: var(--brand-dark);">Mandame por WhatsApp <strong>2 o 3 capturas de conversaciones reales</strong> con clientes (de las buenas, donde se ve cómo hablás). No tachés nada — los datos personales los borro yo después.</div>
+        <div class="audio-instructions" style="color: var(--brand-dark);">
+          Ideales si tenés:<br>
+          1️⃣ Una donde una mamá pregunta por un cumple infantil y vos respondés<br>
+          2️⃣ Una de un cumple de 15 o casamiento<br>
+          3️⃣ Una de un cliente corporativo / empresa
+        </div>
+        <label class="option" style="margin-top: 12px;">
+          <input type="checkbox" data-key="capturas_enviadas" value="enviadas">
+          <span>✅ Ya mandé las capturas por WhatsApp</span>
+        </label>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          8. ¿Hay algún cliente real que pondrías como "el modelo ideal" de cómo querés que te traten?
+        </label>
+        <textarea data-key="cliente_modelo" placeholder='Ej: "El de Mariana, mamá de Felipe — fluido, agradable, cerramos en 4 mensajes". Si querés, mandame esa conversación por WhatsApp.'></textarea>
+        <div class="field-help">Ese tipo de conversación va a ser el "norte" del bot.</div>
+      </div>
+
+      <div class="section-nav">
+        <button class="btn btn-secondary" onclick="goToSection(1)">← Volver</button>
+        <button class="btn btn-primary" onclick="goToSection(3)">Siguiente: Tus clientes →</button>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCIÓN 3: TUS CLIENTES                                        -->
+    <!-- ============================================================ -->
+    <section class="section" data-section="3">
+      <div class="section-header">
+        <div class="section-eyebrow">
+          Sección 3 de 11 · Tus clientes
+          <span class="time-pill">⏱ 4 min · 6 preguntas</span>
+        </div>
+        <h1 class="section-title">A quién atendés (y a quién NO)</h1>
+        <p class="section-desc">El bot tiene que saber a quién filtrar antes de que llegue a vos. Esto es lo que más tiempo te va a ahorrar.</p>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          1. Tipos de cliente que más recibís (tildá los que apliquen)
+        </label>
+        <div class="options">
+          <label class="option"><input type="checkbox" data-key-multi="tipos_cliente" value="Mamás cumples infantiles"><span>Mamás organizando cumple infantil</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="tipos_cliente" value="Familias cumples de 15"><span>Familias para cumple de 15</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="tipos_cliente" value="Novios casamiento"><span>Novios organizando su casamiento</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="tipos_cliente" value="RRHH empresas"><span>RRHH / marketing de empresas (brindis, kickoffs)</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="tipos_cliente" value="Adultos cumples sociales"><span>Adultos para cumple/aniversario propio</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="tipos_cliente" value="Wedding planners"><span>Otros wedding/event planners que tercerizan</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          2. 🚫 Consultas que NO querés que el bot te derive (filtro automático)
+        </label>
+        <div class="field-help">Tildá lo que claramente NO querés atender, así el bot las descarta amablemente sin molestarte.</div>
+        <div class="options">
+          <label class="option"><input type="checkbox" data-key-multi="no_atender" value="Fuera de Salta"><span>Eventos fuera de Salta capital</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="no_atender" value="Menos de 15 días"><span>Eventos con menos de 15 días de anticipación</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="no_atender" value="Menos de 20 invitados"><span>Eventos con menos de 20 invitados</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="no_atender" value="Presupuesto muy bajo"><span>Presupuesto menor a $200.000</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="no_atender" value="Solo decoración chiquita"><span>Solo arreglos pequeños (pedí solo globos, mesa dulce sola)</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="no_atender" value="Pedidos de presupuesto sin fecha"><span>"Solo quiero saber el precio" sin fecha concreta</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          3. Otros casos para descartar (si tenés alguno específico)
+        </label>
+        <textarea data-key="no_atender_otros" placeholder='Ej: "Si me piden Frozen no, ya no hago esa temática" o "Si es un casamiento de más de 200 personas tampoco, no tengo logística"'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          4. ¿Cómo te das cuenta que un cliente vale ORO? (señales de VIP)
+        </label>
+        <textarea data-key="senales_vip" placeholder='Ej:
+- Habla de varios eventos al año (familias grandes que celebran muchos cumples)
+- Es referido de [tal cliente] que ya organicé
+- Es empresa conocida (banco, inmobiliaria importante de Salta)
+- Pide presupuesto sin regatear, pregunta más por la calidad
+- No mira tanto el precio, pregunta detalles de servicio'></textarea>
+        <div class="field-help">Para que el bot los detecte y te avise enseguida: "Ori, este parece VIP".</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          5. Señales de "cliente complicado" (para que el bot te avise antes que cierres con cuidado)
+        </label>
+        <textarea data-key="senales_complicado" placeholder='Ej:
+- Manda 1.000 audios pidiendo lo mismo de mil formas
+- Regatea desde el primer mensaje sin saber el precio
+- Cambia de opinión todo el tiempo
+- "Es para el sábado" (urgencia que no da)
+- Pide referencias de muchísimos eventos previos sin avanzar'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          6. ¿Hay clientes específicos que SIEMPRE querés atender vos directamente, sin que el bot conteste primero?
+        </label>
+        <textarea data-key="clientes_directos" placeholder='Ej: "Mariana Lopez, mi prima Carla, el de Banco Macro, los de la familia López". Si tenés una lista mental, escribilas. Yo después configuro al bot para que cuando escriba ese número, te derive a vos directo.'></textarea>
+      </div>
+
+      <div class="section-nav">
+        <button class="btn btn-secondary" onclick="goToSection(2)">← Volver</button>
+        <button class="btn btn-primary" onclick="goToSection(4)">Siguiente: Precios →</button>
+      </div>
+    </section>
+    <!-- ============================================================ -->
+    <!-- SECCIÓN 4: PRECIOS Y PAQUETES                                  -->
+    <!-- ============================================================ -->
+    <section class="section" data-section="4">
+      <div class="section-header">
+        <div class="section-eyebrow">
+          Sección 4 de 11 · Precios
+          <span class="time-pill">⏱ 6 min · 10 preguntas</span>
+        </div>
+        <h1 class="section-title">Precios y paquetes</h1>
+        <p class="section-desc">Lo que el bot puede decir por su cuenta y lo que tiene que consultarte. Esto evita que prometa algo que no podés cumplir.</p>
+      </div>
+
+      <div class="info-block">
+        <strong>💰 Importante:</strong> con esto definimos qué puede cotizar el bot solo, y dónde dice "esto lo ve Ori personalmente". Si te incomoda dar números cerrados, podemos hacer que solo dé rangos. Vos elegís.
+      </div>
+
+      <h3 style="font-size: 16px; margin: 24px 0 12px; color: var(--ink-2);">🎈 CUMPLES INFANTILES</h3>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label">
+            <span class="crit crit-red">🔴 Clave</span>
+            1. Cumple chico (20-30 chicos) — rango ARS
+          </label>
+          <input type="text" data-key="precio_infantil_chico" placeholder="Ej: $320.000 a $450.000">
+        </div>
+        <div class="field">
+          <label class="field-label">
+            <span class="crit crit-red">🔴 Clave</span>
+            2. Cumple mediano (40-50 chicos)
+          </label>
+          <input type="text" data-key="precio_infantil_mediano" placeholder="Ej: $500.000 a $700.000">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          3. Cumple grande (60+ chicos)
+        </label>
+        <input type="text" data-key="precio_infantil_grande" placeholder="Ej: desde $800.000 en adelante, se cotiza a medida">
+      </div>
+
+      <h3 style="font-size: 16px; margin: 28px 0 12px; color: var(--ink-2);">👗 CUMPLES DE 15</h3>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          4. Cumple de 15 — rangos según cantidad
+        </label>
+        <textarea data-key="precio_15" placeholder='Ej:
+- Hasta 80 invitados: $700.000 a $900.000
+- Hasta 150 invitados: $1.000.000 a $1.300.000
+- Más de 150: se cotiza personalmente'></textarea>
+      </div>
+
+      <h3 style="font-size: 16px; margin: 28px 0 12px; color: var(--ink-2);">💍 CASAMIENTOS</h3>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          5. Casamientos — rangos
+        </label>
+        <textarea data-key="precio_casamiento" placeholder='Ej:
+- Casamiento íntimo (hasta 80 personas): desde $1.000.000
+- Casamiento mediano (80-150): $1.300.000 a $1.500.000
+- Más grande: cotización personalizada (siempre lo cierro yo)'></textarea>
+      </div>
+
+      <h3 style="font-size: 16px; margin: 28px 0 12px; color: var(--ink-2);">🏢 CORPORATIVOS</h3>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          6. Eventos corporativos — cómo cotizar
+        </label>
+        <textarea data-key="precio_corporativo" placeholder='Ej:
+- Brindis chico (hasta 40 personas): desde $400.000
+- Lanzamiento / aniversario: depende, siempre cotizo personalizado
+- Decirle al cliente: "te paso a Ori para armar la propuesta a medida"'></textarea>
+      </div>
+
+      <h3 style="font-size: 16px; margin: 28px 0 12px; color: var(--ink-2);">⚙️ REGLAS DEL BOT CON PRECIOS</h3>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          7. ¿El bot puede dar precios cerrados o solo rangos?
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="bot_precios_modo" value="Solo rangos"><span><strong>Solo rangos</strong> — Ej: "ese cumple ronda los $400-500k", pero el precio cerrado lo das vos</span></label>
+          <label class="option"><input type="radio" data-key="bot_precios_modo" value="Cerrados en chicos, rangos en grandes"><span><strong>Cerrados en cumples infantiles chicos, rangos en lo demás</strong></span></label>
+          <label class="option"><input type="radio" data-key="bot_precios_modo" value="Nunca da precios"><span><strong>Nunca da precios</strong> — siempre escala a vos para cotizar</span></label>
+          <label class="option escape-option"><input type="radio" data-key="bot_precios_modo" value="DECIDILO_MATEO"><span>No sé, decidilo vos Mateo</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          8. ¿A partir de qué monto el bot SIEMPRE te pasa la consulta?
+        </label>
+        <input type="text" data-key="precio_escala" placeholder='Ej: "más de $800.000 lo veo yo" o "todo casamiento siempre lo veo yo"'>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          9. ¿Hacés descuentos? ¿En qué casos?
+        </label>
+        <textarea data-key="descuentos" placeholder='Ej:
+- Pago contado total: 5% off
+- Cliente referido por otro cliente: 10% off
+- Combo casamiento + civil: 8% off
+- Si no, decir: "los precios son cerrados, ya están ajustados a tu evento"'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          10. Forma de pago estándar
+        </label>
+        <textarea data-key="forma_pago" placeholder='Ej:
+- 50% seña al confirmar fecha (transfer / MP)
+- 50% restante: 7 días antes del evento
+- Aceptamos: transferencia, Mercado Pago, efectivo
+- ¿Aceptás 100% al final? ¿Cuotas? ¿Solo VIPs?'></textarea>
+      </div>
+
+      <div class="section-nav">
+        <button class="btn btn-secondary" onclick="goToSection(3)">← Volver</button>
+        <button class="btn btn-primary" onclick="goToSection(5)">Siguiente: Preguntas frecuentes →</button>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCIÓN 5: PREGUNTAS FRECUENTES                                -->
+    <!-- ============================================================ -->
+    <section class="section" data-section="5">
+      <div class="section-header">
+        <div class="section-eyebrow">
+          Sección 5 de 11 · FAQs
+          <span class="time-pill">⏱ 7 min · 12 preguntas pre-cargadas</span>
+        </div>
+        <h1 class="section-title">Las preguntas que te hacen siempre</h1>
+        <p class="section-desc">Te dejé pre-cargadas las típicas del rubro. Vos solo respondé cada una como la responderías por WhatsApp. <strong>Escribí relajada, como hablás vos.</strong></p>
+      </div>
+
+      <div class="info-block">
+        <strong>📌 Ojo:</strong> no respondas perfecto. Respondé <em>como respondés realmente</em>. Si decís "te cuento amorr 💛", escribilo así, no en perfecto castellano.
+      </div>
+
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <div class="faq-question">"¿Cuánto sale un cumple para X chicos?"</div>
+          <textarea data-key="faq_cuanto_sale" placeholder='Ej: "Hola! Mirá, para X chicos te ronda los $... 💛 Para pasarte un valor cerrado necesito saber qué temática querés y si querés mesa dulce incluida. ¿Para qué fecha estabas pensando?"'></textarea>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">"¿Tenés disponible para el [fecha]?"</div>
+          <textarea data-key="faq_disponibilidad" placeholder='Ej: "Dejame chequear la agenda y te confirmo en un toque, divina"'></textarea>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">"¿Qué incluye el servicio?"</div>
+          <textarea data-key="faq_que_incluye" placeholder='Ej: "Incluye: decoración temática completa (globos, mesa principal, ambientación), animación, mesa dulce con X variedades, montaje y desmontaje. Si querés podés sumar fotógrafo, foodtruck o catering aparte."'></textarea>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">"¿Puedo ver fotos de eventos previos?"</div>
+          <textarea data-key="faq_fotos" placeholder='Ej: "Sí! En mi Instagram @dichini.events tenés un montón. ¿Querés que te mande de un evento similar al tuyo?"'></textarea>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">"¿Cuánto hay que pagar para reservar la fecha?"</div>
+          <textarea data-key="faq_sena" placeholder='Ej: "Con el 50% de seña te quedás con la fecha confirmada. El 50% restante lo abonás 7 días antes del evento. Aceptamos transferencia, MP o efectivo."'></textarea>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">"¿Cuánto antes hay que avisar / reservar?"</div>
+          <textarea data-key="faq_anticipacion" placeholder='Ej: "Ideal con 2 meses de anticipación, sobre todo si la temática es muy específica. Para casamientos, mínimo 6 meses. ¿Para cuándo es tu evento?"'></textarea>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">"¿Trabajás en otras ciudades / fuera de Salta?"</div>
+          <textarea data-key="faq_otras_ciudades" placeholder='Ej: "Sí, voy a Jujuy y Tucumán con un adicional por logística. Otras provincias depende del caso, contame qué tenés en mente."'></textarea>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">"¿Hacés tortas / mesa dulce sola sin organizar todo el evento?"</div>
+          <textarea data-key="faq_solo_mesa" placeholder='Ej: "Ay, no, ahora no estoy vendiendo cosas sueltas. Solo eventos completos. Pero te puedo recomendar a Lorena que es divina con la mesa dulce."'></textarea>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">"¿Tenés temática [X] disponible?" (Frozen, Jurassic, etc.)</div>
+          <textarea data-key="faq_tematicas" placeholder='Ej: "Sí divina, esa la hago. Tengo ambientación lista o si querés algo más customizado lo armamos. ¿Para qué fecha y cuántos chicos?"
+          
+También: temáticas que NO hacés ej: "Frozen ya no estoy ofreciendo, mucho stock viejo"'></textarea>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">"¿Hay alguna promo / descuento?"</div>
+          <textarea data-key="faq_descuentos" placeholder='Ej: "Los precios ya están armados a medida del evento, no manejo descuentos por porcentaje. Pero si pagás todo contado o si te referís otra amiga, vemos."'></textarea>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">"¿Me podés mandar un presupuesto por escrito / PDF?"</div>
+          <textarea data-key="faq_presupuesto" placeholder='Ej: "Sí, después de que hablemos los detalles te lo armo formal y te lo paso por acá. Necesito que me confirmes fecha, cantidad de invitados y temática."'></textarea>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">"Lo voy a pensar y te aviso"</div>
+          <textarea data-key="faq_lo_pienso" placeholder='Ej: "Dale bárbaro, sin apuro 💛. Ojo que la fecha la libero si no la confirmás antes de [X días]. Cualquier cosa me avisás!"'></textarea>
+        </div>
+
+        <div class="faq-item" id="faq-extra-item">
+          <div class="faq-question">¿Hay alguna otra pregunta MUY frecuente que no puse acá?</div>
+          <textarea data-key="faq_extra" placeholder='Ej: "Si me preguntan si trabajo con menos de X invitados", "Si me preguntan por mascotas en eventos", etc.
+
+Escribí la pregunta y tu respuesta típica.'></textarea>
+        </div>
+
+      </div>
+
+      <div class="section-nav">
+        <button class="btn btn-secondary" onclick="goToSection(4)">← Volver</button>
+        <button class="btn btn-primary" onclick="goToSection(6)">Siguiente: Cómo vendés →</button>
+      </div>
+    </section>
+    <!-- ============================================================ -->
+    <!-- SECCIÓN 6: PROCESO DE VENTA Y OBJECIONES                       -->
+    <!-- ============================================================ -->
+    <section class="section" data-section="6">
+      <div class="section-header">
+        <div class="section-eyebrow">
+          Sección 6 de 11 · Cómo vendés
+          <span class="time-pill">⏱ 5 min · 8 preguntas</span>
+        </div>
+        <h1 class="section-title">Cómo vendés vos</h1>
+        <p class="section-desc">El bot va a imitar tu proceso. Contame los pasos como los hacés realmente, no como "deberían ser".</p>
+      </div>
+
+      <div class="info-block">
+        <strong>💎 Sección de oro:</strong> acá entrenamos al bot para que <em>venda como vos</em>, no como un asistente robot. Las objeciones son donde más valor agregás — copialas tal cual.
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          1. Datos que SIEMPRE pedís antes de pasar precio
+        </label>
+        <div class="field-help">El bot va a pedirlos como vos. Tildá los que pedís siempre.</div>
+        <div class="options">
+          <label class="option"><input type="checkbox" data-key-multi="datos_minimos" value="Fecha"><span>📅 Fecha del evento</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="datos_minimos" value="Cantidad de invitados"><span>👥 Cantidad de invitados aproximada</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="datos_minimos" value="Tipo de evento"><span>🎉 Tipo de evento (cumple, casamiento, corporativo)</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="datos_minimos" value="Temática"><span>🎨 Temática o estilo deseado</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="datos_minimos" value="Lugar"><span>📍 Lugar / salón donde es</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="datos_minimos" value="Presupuesto"><span>💰 Presupuesto orientativo del cliente</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="datos_minimos" value="Nombre"><span>📝 Nombre y referencia (cómo te encontró)</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          2. ¿En qué momento pasás del WhatsApp a una llamada o reunión?
+        </label>
+        <textarea data-key="momento_llamada" placeholder='Ej: "Cuando el cliente está medio decidido y necesita armar el evento, ahí le propongo una llamada o que nos veamos en persona. En casamientos siempre intento reunión presencial antes de cerrar."'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          3. ¿Cuánto tiempo le das al cliente para decidir antes de hacer follow-up?
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="tiempo_followup" value="48hs"><span>2 días sin respuesta — re-engancho</span></label>
+          <label class="option"><input type="radio" data-key="tiempo_followup" value="3-4 días"><span>3-4 días — espero un poco más</span></label>
+          <label class="option"><input type="radio" data-key="tiempo_followup" value="7 días"><span>1 semana — no quiero parecer ansiosa</span></label>
+          <label class="option"><input type="radio" data-key="tiempo_followup" value="Mixto"><span>Depende — VIP enseguida, los demás más tiempo</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          4. ¿Qué le decís al cliente que "desapareció" después de pasarle el presupuesto?
+        </label>
+        <textarea data-key="mensaje_followup" placeholder='Ej: "Hola Mari! 💛 ¿Cómo estás? Te quería consultar si pudiste verlo bien, así me organizo con la fecha. Cualquier duda me decís."'></textarea>
+        <div class="field-help">El bot va a usar este mensaje (o variantes) para reactivar leads fríos.</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          5. ¿Cuántos seguimientos hacés antes de "soltar" un cliente?
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="cantidad_followups" value="1"><span>1 follow-up y si no contesta, soltó</span></label>
+          <label class="option"><input type="radio" data-key="cantidad_followups" value="2"><span>2 follow-ups (a los 3 y a los 10 días)</span></label>
+          <label class="option"><input type="radio" data-key="cantidad_followups" value="3"><span>3 follow-ups con tonos distintos (suave / oferta / cierre)</span></label>
+          <label class="option escape-option"><input type="radio" data-key="cantidad_followups" value="DECIDILO_MATEO"><span>No sé, decidilo vos Mateo</span></label>
+        </div>
+      </div>
+
+      <h3 style="font-size: 16px; margin: 28px 0 12px; color: var(--ink-2);">🛡️ OBJECIONES TÍPICAS</h3>
+
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <div class="faq-question">"Está muy caro / No me da el presupuesto"</div>
+          <textarea data-key="obj_caro" placeholder='Ej: "Te entiendo divina, ¿qué presupuesto tenías pensado? Si me decís me fijo qué se puede ajustar (sacar mesa dulce, reducir invitados, hacerlo en otro horario, etc.) sin perder lo lindo del evento 💛"'></textarea>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">"Estoy consultando con otros también"</div>
+          <textarea data-key="obj_otros" placeholder='Ej: "Súper, eso está bien! Compará con calma. Yo te puedo decir que lo nuestro incluye [X cosa diferencial]. Cualquier duda me preguntás 💛"'></textarea>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">"Me lo dejás más barato si pago todo de una?"</div>
+          <textarea data-key="obj_contado" placeholder='Ej: "Si pagás todo al contado al confirmar te dejo un X% de descuento. ¿Querés que te pase la cuenta?"
+o
+"No manejo descuentos pero te puedo mejorar algo del paquete (sumar un servicio)."'></textarea>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">"Lo hablo con mi marido / familia y te aviso"</div>
+          <textarea data-key="obj_consultar" placeholder='Ej: "Perfecto! Tomate tu tiempo. Te dejo el presupuesto reservado hasta el [fecha]. Si querés también te mando el link a mi Instagram para que lo vean juntos. 💛"'></textarea>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">"¿Me lo podés bajar un poco?" (regateo)</div>
+          <textarea data-key="obj_regateo" placeholder='Ej: "Los precios son cerrados y ya están armados a la medida del evento. Lo que sí, si querés podemos ajustar el paquete: sacar algo o cambiar por una opción más económica. Decime hasta cuánto pensabas gastar y vemos."'></textarea>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">¿Hay alguna otra objeción que te hagan seguido?</div>
+          <textarea data-key="obj_extra" placeholder='Escribí la objeción y tu respuesta típica.'></textarea>
+        </div>
+
+      </div>
+
+      <div class="section-nav">
+        <button class="btn btn-secondary" onclick="goToSection(5)">← Volver</button>
+        <button class="btn btn-primary" onclick="goToSection(7)">Siguiente: Reglas del bot →</button>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCIÓN 7: REGLAS DEL BOT (ESCALAMIENTO)                       -->
+    <!-- ============================================================ -->
+    <section class="section" data-section="7">
+      <div class="section-header">
+        <div class="section-eyebrow">
+          Sección 7 de 11 · Reglas del bot
+          <span class="time-pill">⏱ 4 min · 6 preguntas</span>
+        </div>
+        <h1 class="section-title">Cuándo el bot te pasa la pelota</h1>
+        <p class="section-desc">El bot tiene que saber qué puede manejar solo y cuándo derivarte. Acá definimos el perímetro.</p>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          1. ¿Hasta qué punto el bot puede manejarse SOLO?
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="bot_autonomia" value="Cierra reserva chica solo"><span><strong>Puede cerrar consultas chicas</strong> — dar precio, mandar info, agendar reunión, mandar link de seña en eventos hasta cierto monto</span></label>
+          <label class="option"><input type="radio" data-key="bot_autonomia" value="Solo filtra y agenda"><span><strong>Solo filtra y agenda</strong> — pide los datos, da rangos, agenda llamada/reunión con vos. Cerrar siempre lo hacés vos.</span></label>
+          <label class="option"><input type="radio" data-key="bot_autonomia" value="Solo recibe consultas"><span><strong>Solo recibe y te avisa</strong> — saluda, pide datos básicos y te dice "Ori, llegó este lead"</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          2. Casos donde el bot SIEMPRE te tiene que derivar el cliente (sí o sí)
+        </label>
+        <textarea class="large" data-key="bot_deriva_siempre" placeholder='Ya tildé algunos típicos abajo, pero confirmá / agregá:
+✓ Cliente con queja o reclamo
+✓ Evento a menos de 15 días
+✓ Casamiento (siempre cerrás vos)
+✓ Presupuesto mayor a $X
+✓ Cliente difícil / que regatea fuerte
+✓ Pedido fuera de lo habitual
+✓ Cliente conocido / referido por familia
+✓ Cualquier mención de problema con un evento previo'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          3. Lo que el bot NUNCA debe decir ni prometer
+        </label>
+        <textarea class="large" data-key="bot_nunca" placeholder='Ej:
+- Nunca prometer una fecha sin que yo la confirme
+- Nunca dar precio cerrado en casamientos
+- Nunca decir "lo hablamos con [proveedor]" porque a veces cambia
+- Nunca aceptar pedidos con menos de 15 días
+- Nunca pedir datos sensibles (DNI, tarjetas, claves)
+- Nunca prometer descuentos sin consultarme'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          4. Cuando el bot te avisa, ¿cómo querés que te avise?
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="bot_aviso_modo" value="Resumen + cliente"><span><strong>Un resumen en tu chat</strong> — "Hola Ori, llegó Mariana, mamá de Felipe, quiere cumple Jurassic 25 chicos sábado 15. Ya le pasé rango."</span></label>
+          <label class="option"><input type="radio" data-key="bot_aviso_modo" value="Pase directo"><span><strong>Te pasa el chat directamente</strong> — el bot deja de contestar y vos continuás la conversación</span></label>
+          <label class="option"><input type="radio" data-key="bot_aviso_modo" value="Mixto"><span><strong>Mixto</strong> — para casos urgentes te pasa directo, para los normales te manda resumen y vos decidís</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          5. ¿Cómo se comporta el bot fuera de tu horario?
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="bot_fuera_horario" value="Atiende 24/7 con aviso"><span><strong>Atiende 24/7</strong> pero avisa que vos respondés al día siguiente para detalles finos</span></label>
+          <label class="option"><input type="radio" data-key="bot_fuera_horario" value="Atiende y agenda"><span><strong>Atiende, toma datos y agenda</strong> para que vos llames al día siguiente</span></label>
+          <label class="option"><input type="radio" data-key="bot_fuera_horario" value="No contesta"><span><strong>No contesta nada</strong> fuera de horario, se queda callado</span></label>
+          <label class="option escape-option"><input type="radio" data-key="bot_fuera_horario" value="DECIDILO_MATEO"><span>No sé, decidilo vos Mateo</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          6. ¿Querés que el bot guarde a cada cliente automáticamente en una "agenda"?
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="bot_guarda_db" value="Todos"><span>Sí, a todos los que escriban — quiero base de clientes</span></label>
+          <label class="option"><input type="radio" data-key="bot_guarda_db" value="Solo los que confirman"><span>Solo a los que cierran evento</span></label>
+          <label class="option"><input type="radio" data-key="bot_guarda_db" value="No"><span>No, no necesito agenda automática</span></label>
+        </div>
+      </div>
+
+      <div class="section-nav">
+        <button class="btn btn-secondary" onclick="goToSection(6)">← Volver</button>
+        <button class="btn btn-primary" onclick="goToSection(8)">Siguiente: Cobranzas →</button>
+      </div>
+    </section>
+    <!-- ============================================================ -->
+    <!-- SECCIÓN 8: COBRANZAS Y POSTVENTA                               -->
+    <!-- ============================================================ -->
+    <section class="section" data-section="8">
+      <div class="section-header">
+        <div class="section-eyebrow">
+          Sección 8 de 11 · Cobranzas
+          <span class="time-pill">⏱ 4 min · 7 preguntas</span>
+        </div>
+        <h1 class="section-title">Cobranzas y postventa</h1>
+        <p class="section-desc">Cómo el bot maneja las señas, los saldos y el feedback después del evento.</p>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          1. Mensaje exacto que mandás cuando el cliente confirma y le pedís la seña
+        </label>
+        <textarea class="large" data-key="msg_sena" placeholder='Pegalo o escribilo como lo mandás. Ej:
+"Genial!! 💛 Te paso entonces:
+Para reservar la fecha la seña es del 50%: $X.
+Te paso CBU o link de Mercado Pago, lo que prefieras.
+
+CBU: XXXX
+Alias: dichini.events
+MP: link
+
+Apenas me confirmás el pago te mando el comprobante de reserva 🎉"'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          2. ¿A los cuántos días insistís si no pagaron la seña?
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="insistir_sena" value="24hs"><span>24 hs — al día siguiente, suave</span></label>
+          <label class="option"><input type="radio" data-key="insistir_sena" value="48hs"><span>2 días después</span></label>
+          <label class="option"><input type="radio" data-key="insistir_sena" value="3-5 días"><span>3 a 5 días después</span></label>
+          <label class="option escape-option"><input type="radio" data-key="insistir_sena" value="DECIDILO_MATEO"><span>No sé, decidilo vos Mateo</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          3. ¿Qué le decís cuando insistís por la seña? (tono)
+        </label>
+        <textarea data-key="msg_insistencia_sena" placeholder='Ej: "Hola Mari! 💛 Te aviso que la fecha sigue libre, ¿necesitás que te pase de nuevo el CBU? Avisame así te la confirmo formalmente."'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          4. ¿Cuántos días antes del evento mandás el recordatorio del saldo?
+        </label>
+        <div class="field-row">
+          <div>
+            <input type="text" data-key="dias_antes_saldo" placeholder="Ej: 10 días antes">
+          </div>
+          <div>
+            <textarea data-key="msg_saldo" placeholder='Mensaje que mandás:
+"Hola Mari! Ya falta poquito 🎉 Te recuerdo el saldo final de $X para el [fecha del evento]. CBU/MP igual que la otra vez."'></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          5. ¿Cuántos días después del evento pedís feedback?
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="dias_feedback" value="1-2 días"><span>1 o 2 días después — cuando todavía está fresco</span></label>
+          <label class="option"><input type="radio" data-key="dias_feedback" value="1 semana"><span>1 semana después — para que ya pasen los nervios</span></label>
+          <label class="option"><input type="radio" data-key="dias_feedback" value="No pido"><span>No pido feedback hoy, sería bueno que el bot lo haga</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          6. Mensaje exacto para pedir reseña en Google si el feedback fue bueno
+        </label>
+        <textarea data-key="msg_resena" placeholder='Ej: "Mari mi amor, qué hermoso fue! 💛💛 Si me querés ayudar mucho mucho, ¿me dejarías una reseñita en Google? Te dejo el link [link]. Significa muchísimo, gracias mil!! 🎈"'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-red">🔴 Clave</span>
+          7. ¿Qué hace el bot si el feedback es MALO?
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="bot_feedback_malo" value="Te avisa enseguida"><span><strong>Te avisa enseguida</strong> — corta la conversación y te pasa el cliente, no intenta resolverlo</span></label>
+          <label class="option"><input type="radio" data-key="bot_feedback_malo" value="Empatiza y deriva"><span><strong>Empatiza primero</strong> — dice "qué pena, lo charlo con Ori y te respondemos hoy mismo" y te deriva</span></label>
+        </div>
+        <div class="field-help">⚠️ Recomendado: el bot NUNCA intenta resolver una queja real. Eso siempre lo manejás vos.</div>
+      </div>
+
+      <div class="section-nav">
+        <button class="btn btn-secondary" onclick="goToSection(7)">← Volver</button>
+        <button class="btn btn-primary" onclick="goToSection(9)">Siguiente: Mensajes proactivos →</button>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCIÓN 9: MENSAJES PROACTIVOS                                  -->
+    <!-- ============================================================ -->
+    <section class="section" data-section="9">
+      <div class="section-header">
+        <div class="section-eyebrow">
+          Sección 9 de 11 · Mensajes proactivos
+          <span class="time-pill">⏱ 3 min · 5 preguntas</span>
+        </div>
+        <h1 class="section-title">Lo que el bot manda sin que el cliente pregunte</h1>
+        <p class="section-desc">Para mantener a los clientes calentitos y que se acuerden de vos cuando organicen el próximo evento. Esto se puede activar más adelante si querés.</p>
+      </div>
+
+      <div class="info-block">
+        <strong>📅 Fase 2 sugerida:</strong> esto está bueno activarlo cuando ya tengas el bot andando un par de semanas y veas que anda fino con clientes nuevos. Igual cargá lo que tengas claro, así lo dejamos preparado.
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          1. ¿Querés que el bot mande saludo de cumpleaños a tus clientes?
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="bot_saluda_cumple_cliente" value="Sí"><span>Sí, a los clientes (los adultos)</span></label>
+          <label class="option"><input type="radio" data-key="bot_saluda_cumple_cliente" value="Sí, a los hijos también"><span>Sí, y también a los hijos (de los cumples que organicé)</span></label>
+          <label class="option"><input type="radio" data-key="bot_saluda_cumple_cliente" value="No"><span>No, prefiero hacerlo yo</span></label>
+          <label class="option escape-option"><input type="radio" data-key="bot_saluda_cumple_cliente" value="DECIDILO_MATEO"><span>No sé, decidilo vos Mateo</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          2. Mensaje de cumpleaños que querrías mandar
+        </label>
+        <textarea data-key="msg_cumple" placeholder='Ej: "Feliz cumple Mari!! 💛🎈 Que tengas un día divino lleno de cosas lindas. Un beso enorme!"'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-gray">⚪ Después</span>
+          3. Fechas especiales en que querrías que el bot mande algo
+        </label>
+        <div class="options">
+          <label class="option"><input type="checkbox" data-key-multi="fechas_especiales" value="Día del Niño"><span>Día del Niño (para mamás)</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="fechas_especiales" value="Día de la Madre"><span>Día de la Madre</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="fechas_especiales" value="Fin de año"><span>Fin de año / Brindis (a corporativos)</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="fechas_especiales" value="1 año del evento"><span>1 año del evento ("hace 1 año hicimos el cumple de X")</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="fechas_especiales" value="No quiero mensajes proactivos"><span>No, prefiero que no mande nada proactivo</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-gray">⚪ Después</span>
+          4. ¿Cómo te gustaría que el bot reactive clientes viejos que no contrataron de nuevo?
+        </label>
+        <textarea data-key="reactivacion_viejos" placeholder='Ej: "Cada 6 meses, mandar mensaje a los que confirmaron evento hace más de un año: hola Mari! Cómo andás? Si estás organizando algo este año, recordá que estoy 💛"
+o
+"No me gusta forzar, dejar que vuelvan solos"'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-gray">⚪ Después</span>
+          5. ¿Tirás "promos del mes" o no es tu estilo?
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="promos" value="Sí, a veces"><span>Sí, a veces tiro promos puntuales (ej: temporada baja)</span></label>
+          <label class="option"><input type="radio" data-key="promos" value="No, no es mi estilo"><span>No, no es mi estilo — me gusta que paguen el valor real</span></label>
+          <label class="option"><input type="radio" data-key="promos" value="Solo a clientes VIP"><span>Solo a VIPs, en privado</span></label>
+        </div>
+      </div>
+
+      <div class="section-nav">
+        <button class="btn btn-secondary" onclick="goToSection(8)">← Volver</button>
+        <button class="btn btn-primary" onclick="goToSection(10)">Siguiente: Tu copiloto →</button>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCIÓN 10: COPILOTO PERSONAL                                   -->
+    <!-- ============================================================ -->
+    <section class="section" data-section="10">
+      <div class="section-header">
+        <div class="section-eyebrow">
+          Sección 10 de 11 · Copiloto
+          <span class="time-pill">⏱ 3 min · 4 preguntas</span>
+        </div>
+        <h1 class="section-title">Tu copiloto personal por WhatsApp</h1>
+        <p class="section-desc">El bot también puede trabajar PARA vos. Pedirle cosas por WhatsApp y que te ayude a organizarte el día.</p>
+      </div>
+
+      <div class="info-block">
+        <strong>💡 Cómo funciona:</strong> vos le escribís al bot por tu WhatsApp privado, como si fuera una asistente. "Recordame pagar el flete", "cómo va Felipe", "qué tengo mañana". Y el bot te contesta o ejecuta.
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          1. ¿Qué cosas quisieras poder pedirle al bot a través de WhatsApp?
+        </label>
+        <div class="options">
+          <label class="option"><input type="checkbox" data-key-multi="copiloto_funciones" value="Agendar reuniones"><span>📅 Agendar reuniones con clientes</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="copiloto_funciones" value="Recordatorios"><span>🔔 Recordatorios ("recordame pagar a Mariana el viernes")</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="copiloto_funciones" value="Resumen del día"><span>📋 Resumen del día / semana (eventos próximos, cobros pendientes)</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="copiloto_funciones" value="Info de clientes"><span>👤 Info rápida de un cliente ("cómo va Felipe?")</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="copiloto_funciones" value="Pendientes del día"><span>✅ "Qué tengo pendiente hoy"</span></label>
+          <label class="option"><input type="checkbox" data-key-multi="copiloto_funciones" value="Datos de proveedores"><span>📞 Datos rápidos de proveedores</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          2. ¿Cómo querés que el bot te hable a vos? (más informal que con clientes)
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="copiloto_tono" value="Como amiga"><span>Como una amiga — "ufff Ori, tenés 3 cosas pendientes 😩"</span></label>
+          <label class="option"><input type="radio" data-key="copiloto_tono" value="Asistente neutra"><span>Como asistente formal — "Hola Oriana, tu agenda de hoy es:"</span></label>
+          <label class="option"><input type="radio" data-key="copiloto_tono" value="Eficiente y breve"><span>Eficiente y breve — solo info, sin saludos</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-gray">⚪ Después</span>
+          3. ¿Te gustaría un resumen diario? ¿A qué hora?
+        </label>
+        <div class="options">
+          <label class="option"><input type="radio" data-key="resumen_diario" value="Mañana temprano"><span>Sí, a la mañana temprano (8-9 am)</span></label>
+          <label class="option"><input type="radio" data-key="resumen_diario" value="Noche"><span>Sí, a la noche (cierre del día, qué viene mañana)</span></label>
+          <label class="option"><input type="radio" data-key="resumen_diario" value="No, solo cuando pida"><span>No, solo cuando yo le pida</span></label>
+          <label class="option"><input type="radio" data-key="resumen_diario" value="Solo si hay algo urgente"><span>Solo cuando haya algo URGENTE (evento mañana, cobro pendiente)</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-gray">⚪ Después</span>
+          4. ¿Hay algo que NO querés que el bot te recuerde aunque sea importante?
+        </label>
+        <textarea data-key="no_recordar" placeholder='Ej: "No me recuerdes cosas personales (cumpleaños familiares)" o "no me mandes nada los domingos a la mañana"'></textarea>
+      </div>
+
+      <div class="section-nav">
+        <button class="btn btn-secondary" onclick="goToSection(9)">← Volver</button>
+        <button class="btn btn-primary" onclick="goToSection(11)">Siguiente: Cierre →</button>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCIÓN 11: CIERRE                                              -->
+    <!-- ============================================================ -->
+    <section class="section" data-section="11">
+      <div class="section-header">
+        <div class="section-eyebrow">
+          Sección 11 de 11 · Cierre
+          <span class="time-pill">⏱ 2 min</span>
+        </div>
+        <h1 class="section-title">Ya casi terminamos 🎉</h1>
+        <p class="section-desc">Última parada. Espacio para todo lo que faltó decir.</p>
+      </div>
+
+      <div class="welcome-card" style="background: linear-gradient(135deg, var(--warm) 0%, #E6BE85 100%);">
+        <h2 style="color: #fff;">¡Sos una crack! 💛</h2>
+        <p>Cuando termines esta sección hacés clic en <strong>"Finalizar y exportar"</strong> y me mandás el archivo por WhatsApp. Con eso arranco a entrenar el bot.</p>
+        <p>Si quedó alguna sección a medias, no te preocupes — podés volver y completarla después, todo queda guardado.</p>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          1. ¿Hay algo importante de tu negocio que no te pregunté y que el bot tendría que saber?
+        </label>
+        <textarea class="xl" data-key="extra" placeholder='Cualquier mañana del negocio, manías de los clientes, contexto de Salta, fechas raras, proveedores que SIEMPRE recomendás, lo que se te ocurra. Si no se te ocurre nada, dejalo vacío.'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-yellow">🟡 Mejora mucho</span>
+          2. ¿Hay algo que el bot tiene que decir DIFERENTE a lo que diría una marca cualquiera? (tu sello único)
+        </label>
+        <textarea data-key="sello_unico" placeholder='Ej: "Yo siempre les digo a las mamás que el cumple es SU día también, no solo del hijo. Eso me distingue"
+o
+"Siempre mando fotos en vivo durante el evento, eso me hace única"'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-gray">⚪ Después</span>
+          3. ¿Tu negocio tiene algún plan a futuro que el bot debería tener en cuenta?
+        </label>
+        <textarea data-key="futuro" placeholder='Ej: "El año que viene quiero meterme más en corporativos" o "estoy pensando en sumar paquetes para minis (15-20 chicos)"'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <span class="crit crit-gray">⚪ Después</span>
+          4. Una pavada: ¿algún detalle de tu cliente típico que te llama la atención? (ej: "las mamás siempre pagan tarde")
+        </label>
+        <textarea data-key="observaciones_clientes" placeholder='Cualquier observación sobre cómo se comportan tus clientes. Vale gold para que el bot las anticipe.'></textarea>
+      </div>
+
+      <div class="info-block" style="border-color: var(--brand); background: var(--brand-soft); color: var(--brand-dark);">
+        <strong>🚀 Último paso:</strong> Hacé clic en el botón azul abajo a la derecha → <em>"📤 Exportar respuestas"</em>. Descargá el archivo y mandámelo por WhatsApp. En máximo 7 días te muestro el bot funcionando para que lo pruebes vos primero.
+      </div>
+
+      <div class="section-nav">
+        <button class="btn btn-secondary" onclick="goToSection(10)">← Volver</button>
+        <button class="btn btn-primary" onclick="openExportModal()">✓ Finalizar y exportar</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Floating export button -->
+<button class="floating-export" onclick="openExportModal()">📤 Exportar respuestas</button>
+
+<!-- Export modal -->
+<div class="modal-backdrop" id="exportModal">
+  <div class="modal">
+    <h2>Exportar tus respuestas</h2>
+    <p>Generamos un archivo con todo lo que cargaste. Mandáselo a Mateo por WhatsApp para que arranque a programar el bot.</p>
+
+    <div class="completion-summary" id="completionSummary">
+      <!-- llenado por JS -->
+    </div>
+
+    <div style="background: var(--warm-soft); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 14px; font-size: 13px; color: #78350F; line-height: 1.5;">
+      <strong>💛 Recomendado:</strong> descargá el <strong>PDF</strong>, es el más fácil de leer y mandar por WhatsApp.
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="downloadPDF()">📄 Descargar PDF</button>
+      <button class="btn btn-secondary" onclick="downloadTXT()">📝 Texto plano</button>
+    </div>
+    <div class="modal-actions" style="margin-top: 8px;">
+      <button class="btn btn-secondary" onclick="closeExportModal()">← Volver</button>
+      <button class="btn btn-secondary" onclick="downloadJSON()">📦 JSON (técnico)</button>
+    </div>
+  </div>
+</div>
+<script>
+  // ============================================================
+  // STATE & STORAGE
+  // ============================================================
+  const STORAGE_KEY = 'solvai_onboarding_dichini_v1';
+  let currentSection = 0;
+  let data = {};
+
+  function loadData() {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) data = JSON.parse(stored);
+    } catch(e) { data = {}; }
+  }
+
+  function saveData() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch(e) { /* quota or private mode */ }
+    flashSaveStatus();
+    updateProgress();
+  }
+
+  let saveTimeout;
+  function flashSaveStatus() {
+    const el = document.getElementById('saveStatus');
+    if (!el) return;
+    el.textContent = 'Guardando...';
+    clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(() => {
+      el.textContent = 'Guardado automáticamente';
+    }, 800);
+  }
+
+  // ============================================================
+  // HYDRATE FIELDS FROM SAVED DATA
+  // ============================================================
+  function hydrateFields() {
+    document.querySelectorAll('[data-key]').forEach(el => {
+      const key = el.dataset.key;
+      if (data[key] !== undefined) {
+        if (el.type === 'radio') {
+          if (el.value === data[key]) el.checked = true;
+        } else if (el.type === 'checkbox') {
+          if (data[key] === el.value || data[key] === true) el.checked = true;
+        } else {
+          el.value = data[key];
+        }
+      }
+    });
+    document.querySelectorAll('[data-key-multi]').forEach(el => {
+      const key = el.dataset.keyMulti;
+      if (Array.isArray(data[key]) && data[key].includes(el.value)) {
+        el.checked = true;
+      }
+    });
+    hydrateRepeater('equipo');
+  }
+
+  // ============================================================
+  // INPUT LISTENERS
+  // ============================================================
+  function attachListeners() {
+    document.querySelectorAll('[data-key]').forEach(el => {
+      const key = el.dataset.key;
+      const handler = () => {
+        if (el.type === 'radio') {
+          if (el.checked) data[key] = el.value;
+        } else if (el.type === 'checkbox') {
+          // checkbox simple (no multi) — guarda string si está marcado, vacío si no
+          data[key] = el.checked ? el.value : '';
+        } else {
+          data[key] = el.value;
+        }
+        saveData();
+      };
+      el.addEventListener('input', handler);
+      el.addEventListener('change', handler);
+    });
+
+    document.querySelectorAll('[data-key-multi]').forEach(el => {
+      el.addEventListener('change', () => {
+        const key = el.dataset.keyMulti;
+        if (!Array.isArray(data[key])) data[key] = [];
+        if (el.checked) {
+          if (!data[key].includes(el.value)) data[key].push(el.value);
+        } else {
+          data[key] = data[key].filter(v => v !== el.value);
+        }
+        saveData();
+      });
+    });
+  }
+
+  // ============================================================
+  // REPEATER (equipo)
+  // ============================================================
+  function addRepeaterItem(type, prefill = {}) {
+    if (type === 'equipo') {
+      if (!Array.isArray(data.equipo_personas)) data.equipo_personas = [];
+      data.equipo_personas.push(prefill);
+      renderRepeater('equipo');
+      saveData();
+    }
+  }
+
+  function removeRepeaterItem(type, index) {
+    if (type === 'equipo') {
+      data.equipo_personas.splice(index, 1);
+      renderRepeater('equipo');
+      saveData();
+    }
+  }
+
+  function renderRepeater(type) {
+    if (type === 'equipo') {
+      const container = document.getElementById('rep-equipo');
+      if (!container) return;
+      const items = data.equipo_personas || [];
+      container.innerHTML = '';
+      items.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.className = 'repeater-item';
+        div.innerHTML = `
+          <button class="remove-btn" onclick="removeRepeaterItem('equipo', ${idx})" title="Eliminar">×</button>
+          <div class="repeater-index">Persona ${idx + 1}</div>
+          <div class="field-row-3">
+            <div class="field">
+              <label class="field-label">Nombre</label>
+              <input type="text" value="${escapeHtml(item.nombre || '')}" onchange="updateRepeater('equipo', ${idx}, 'nombre', this.value)" placeholder="Ej: Mariana">
+            </div>
+            <div class="field">
+              <label class="field-label">Rol</label>
+              <input type="text" value="${escapeHtml(item.rol || '')}" onchange="updateRepeater('equipo', ${idx}, 'rol', this.value)" placeholder="Ej: Decoradora">
+            </div>
+            <div class="field">
+              <label class="field-label">Contacto (opcional)</label>
+              <input type="tel" value="${escapeHtml(item.wpp || '')}" onchange="updateRepeater('equipo', ${idx}, 'wpp', this.value)" placeholder="+54 9 ...">
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+  }
+
+  function hydrateRepeater(type) {
+    if (type === 'equipo') {
+      if (Array.isArray(data.equipo_personas) && data.equipo_personas.length > 0) {
+        renderRepeater('equipo');
+      }
+    }
+  }
+
+  function updateRepeater(type, index, field, value) {
+    if (type === 'equipo' && data.equipo_personas && data.equipo_personas[index]) {
+      data.equipo_personas[index][field] = value;
+      saveData();
+    }
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, c => ({
+      '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+    })[c]);
+  }
+
+  // ============================================================
+  // NAVIGATION
+  // ============================================================
+  function goToSection(idx) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const sec = document.querySelector(`.section[data-section="${idx}"]`);
+    const nav = document.querySelector(`.nav-item[data-section="${idx}"]`);
+    if (sec) sec.classList.add('active');
+    if (nav) nav.classList.add('active');
+    currentSection = idx;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ============================================================
+  // PROGRESS TRACKING
+  // ============================================================
+  const sectionFields = {
+    1: ['bot_presentacion', 'oriana_wpp', 'bot_wpp', 'instagram', 'horario_oriana', 'horario_no_bot', 'equipo_personas'],
+    2: ['audio_saludo_mama_texto', 'audio_mama_enviado', 'audio_saludo_empresa_texto', 'audio_empresa_enviado', 'despedida', 'frases_si', 'frases_no', 'trato', 'emojis', 'emojis_favoritos', 'como_te_llaman', 'capturas_enviadas', 'cliente_modelo'],
+    3: ['tipos_cliente', 'no_atender', 'no_atender_otros', 'senales_vip', 'senales_complicado', 'clientes_directos'],
+    4: ['precio_infantil_chico', 'precio_infantil_mediano', 'precio_infantil_grande', 'precio_15', 'precio_casamiento', 'precio_corporativo', 'bot_precios_modo', 'precio_escala', 'descuentos', 'forma_pago'],
+    5: ['faq_cuanto_sale', 'faq_disponibilidad', 'faq_que_incluye', 'faq_fotos', 'faq_sena', 'faq_anticipacion', 'faq_otras_ciudades', 'faq_solo_mesa', 'faq_tematicas', 'faq_descuentos', 'faq_presupuesto', 'faq_lo_pienso', 'faq_extra'],
+    6: ['datos_minimos', 'momento_llamada', 'tiempo_followup', 'mensaje_followup', 'cantidad_followups', 'obj_caro', 'obj_otros', 'obj_contado', 'obj_consultar', 'obj_regateo', 'obj_extra'],
+    7: ['bot_autonomia', 'bot_deriva_siempre', 'bot_nunca', 'bot_aviso_modo', 'bot_fuera_horario', 'bot_guarda_db'],
+    8: ['msg_sena', 'insistir_sena', 'msg_insistencia_sena', 'dias_antes_saldo', 'msg_saldo', 'dias_feedback', 'msg_resena', 'bot_feedback_malo'],
+    9: ['bot_saluda_cumple_cliente', 'msg_cumple', 'fechas_especiales', 'reactivacion_viejos', 'promos'],
+    10: ['copiloto_funciones', 'copiloto_tono', 'resumen_diario', 'no_recordar'],
+    11: ['extra', 'sello_unico', 'futuro', 'observaciones_clientes']
+  };
+
+  // total = todos los campos cuenta para barra. Pongo el valor total de fields.
+  const TOTAL_FIELDS = Object.values(sectionFields).reduce((sum, arr) => sum + arr.length, 0);
+
+  function isFilled(key) {
+    const v = data[key];
+    if (v === undefined || v === null) return false;
+    if (Array.isArray(v)) {
+      if (key === 'equipo_personas') {
+        return v.some(p => (p.nombre && p.nombre.trim()) || (p.rol && p.rol.trim()));
+      }
+      return v.length > 0;
+    }
+    return typeof v === 'string' && v.trim().length > 0;
+  }
+
+  function updateProgress() {
+    let filled = 0;
+    Object.values(sectionFields).forEach(fields => {
+      fields.forEach(f => {
+        if (isFilled(f)) filled++;
+      });
+    });
+
+    const pct = Math.min(100, Math.round((filled / TOTAL_FIELDS) * 100));
+    const fillEl = document.getElementById('progressFill');
+    const pctEl = document.getElementById('progressPct');
+    const countEl = document.getElementById('progressCount');
+    if (fillEl) fillEl.style.width = pct + '%';
+    if (pctEl) pctEl.textContent = pct + '%';
+    if (countEl) countEl.textContent = filled + '/' + TOTAL_FIELDS;
+
+    // mark sections as done if >= 70% complete
+    Object.entries(sectionFields).forEach(([idx, fields]) => {
+      const total = fields.length;
+      const completed = fields.filter(isFilled).length;
+      const navEl = document.querySelector(`.nav-item[data-section="${idx}"]`);
+      if (!navEl) return;
+      if (completed >= Math.ceil(total * 0.7)) {
+        navEl.classList.add('done');
+      } else {
+        navEl.classList.remove('done');
+      }
+    });
+  }
+
+  // ============================================================
+  // EXPORT
+  // ============================================================
+  function openExportModal() {
+    let filled = 0;
+    Object.values(sectionFields).forEach(fields => {
+      fields.forEach(f => { if (isFilled(f)) filled++; });
+    });
+    const total = TOTAL_FIELDS;
+    const pct = Math.round((filled / total) * 100);
+
+    // Cuántas secciones completadas
+    let secCompletas = 0;
+    Object.entries(sectionFields).forEach(([idx, fields]) => {
+      const completed = fields.filter(isFilled).length;
+      if (completed >= Math.ceil(fields.length * 0.7)) secCompletas++;
+    });
+
+    const estadoRow = pct >= 80
+      ? { txt: '✓ Listo para enviar', cls: 'ok' }
+      : pct >= 50
+      ? { txt: 'Parcial — podés completar después', cls: 'warn' }
+      : { txt: '⚠️ Muy poco completado', cls: 'warn' };
+
+    document.getElementById('completionSummary').innerHTML = `
+      <div class="row"><span>Negocio</span><strong>Dichini Events Studio</strong></div>
+      <div class="row"><span>Dueña</span><strong>Oriana</strong></div>
+      <div class="row"><span>Campos completados</span><strong>${filled} de ${total} (${pct}%)</strong></div>
+      <div class="row"><span>Secciones completas</span><strong>${secCompletas} de 11</strong></div>
+      <div class="row ${estadoRow.cls}"><span>Estado</span><strong>${estadoRow.txt}</strong></div>
+    `;
+    document.getElementById('exportModal').classList.add('active');
+  }
+
+  function closeExportModal() {
+    document.getElementById('exportModal').classList.remove('active');
+  }
+
+  function downloadJSON() {
+    const exportData = {
+      _meta: {
+        cliente: 'Dichini Events Studio',
+        dueña: 'Oriana',
+        generado: new Date().toISOString(),
+        version: 'v1'
+      },
+      respuestas: data
+    };
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    triggerDownload(blob, `onboarding_dichini_events.json`);
+  }
+
+  function downloadTXT() {
+    const txt = buildBriefingText();
+    const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+    triggerDownload(blob, `briefing_bot_dichini_events.txt`);
+  }
+
+  // ============================================================
+  // PDF GENERATION (jsPDF)
+  // ============================================================
+  function downloadPDF() {
+    if (typeof window.jspdf === 'undefined') {
+      alert('No se pudo cargar el generador de PDF. Probá con el botón "Texto plano" — funciona igual y me lo mandás así.');
+      return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+
+    // Constantes de página
+    const PAGE_W = 210;
+    const PAGE_H = 297;
+    const MARGIN_X = 16;
+    const MARGIN_TOP = 22;
+    const MARGIN_BOTTOM = 18;
+    const CONTENT_W = PAGE_W - (MARGIN_X * 2);
+
+    // Colores (de la paleta SolvAI)
+    const COLOR_BRAND = [75, 74, 227];        // #4B4AE3
+    const COLOR_INK = [15, 17, 21];           // #0F1115
+    const COLOR_INK2 = [42, 45, 52];          // #2A2D34
+    const COLOR_MUTED = [107, 114, 128];      // #6B7280
+    const COLOR_WARM = [212, 165, 116];       // #D4A574
+    const COLOR_LINE = [229, 231, 235];       // #E5E7EB
+    const COLOR_GRAY_LIGHT = [156, 163, 175]; // #9CA3AF
+
+    let y = MARGIN_TOP;
+    let pageNum = 1;
+
+    // Sanitizar emojis y chars no-latin1 (jsPDF default font no los soporta)
+    // Reemplazamos los emojis comunes por texto, y removemos los demás
+    function clean(s) {
+      if (s == null) return '';
+      let t = String(s);
+      // Reemplazos específicos para mantener significado
+      const replacements = [
+        ['\u{1F3A4}', '[AUDIO]'],   // 🎤
+        ['\u{1F4F8}', '[FOTO]'],    // 📸
+        ['\u26A1', '*'],            // ⚡
+        ['\u{1F49B}', ''],          // 💛
+        ['\u{1F534}', '[!]'],       // 🔴
+        ['\u{1F7E1}', '[~]'],       // 🟡
+        ['\u26AA', '[ ]'],          // ⚪
+        ['\u{1F6AB}', '[NO]'],      // 🚫
+        ['\u2713', 'OK'],           // ✓
+        ['\u2705', 'OK'],           // ✅
+        ['\u2717', 'X'],            // ✗
+        ['\u274C', 'X'],            // ❌
+        ['\u2192', '->'],           // →
+        ['\u2014', '-'],            // — (em dash)
+        ['\u2013', '-'],            // – (en dash)
+        ['\u201C', '"'],            // " left double smart quote
+        ['\u201D', '"'],            // " right double smart quote
+        ['\u2018', "'"],            // ' left single smart quote
+        ['\u2019', "'"],            // ' right single smart quote
+        ['\u2026', '...']           // …
+      ];
+      replacements.forEach(([a, b]) => { t = t.split(a).join(b); });
+      // Quitar cualquier emoji restante (cualquier cosa fuera de latin1 básico)
+      // pero preservar acentos, ñ, etc.
+      t = t.replace(/[\u{1F300}-\u{1FAFF}]/gu, '');
+      t = t.replace(/[\u{2600}-\u{27BF}]/gu, '');
+      t = t.replace(/[\u{1F000}-\u{1F2FF}]/gu, '');
+      return t;
+    }
+
+
+    // Header en cada página (se llama al agregar nueva página)
+    function drawHeader(isFirst = false) {
+      if (isFirst) return; // la primera página tiene cubierta, sin header
+      // Header línea superior
+      doc.setFontSize(8);
+      doc.setTextColor(...COLOR_MUTED);
+      doc.setFont('helvetica', 'normal');
+      doc.text('SolvAI - Briefing Bot WhatsApp', MARGIN_X, 12);
+      doc.text('Dichini Events Studio', PAGE_W - MARGIN_X, 12, { align: 'right' });
+      // Línea separadora
+      doc.setDrawColor(...COLOR_LINE);
+      doc.setLineWidth(0.2);
+      doc.line(MARGIN_X, 15, PAGE_W - MARGIN_X, 15);
+    }
+
+    function drawFooter() {
+      doc.setFontSize(8);
+      doc.setTextColor(...COLOR_MUTED);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`Página ${pageNum}`, PAGE_W / 2, PAGE_H - 8, { align: 'center' });
+    }
+
+    function newPage() {
+      drawFooter();
+      doc.addPage();
+      pageNum++;
+      y = MARGIN_TOP;
+      drawHeader(false);
+    }
+
+    // Si lo que vamos a dibujar no entra, salto de página
+    function ensureSpace(requiredHeight) {
+      if (y + requiredHeight > PAGE_H - MARGIN_BOTTOM) {
+        newPage();
+      }
+    }
+
+    // Helpers de escritura
+    function writeText(text, opts = {}) {
+      const {
+        size = 10,
+        color = COLOR_INK,
+        font = 'helvetica',
+        style = 'normal',
+        x = MARGIN_X,
+        maxW = CONTENT_W,
+        lineHeight = 1.4,
+        indent = 0
+      } = opts;
+
+      doc.setFont(font, style);
+      doc.setFontSize(size);
+      doc.setTextColor(...color);
+
+      const cleaned = clean(String(text == null ? '' : text).replace(/\r/g, ''));
+      const lines = doc.splitTextToSize(cleaned, maxW - indent);
+      const lineHeightPt = size * 0.3528 * lineHeight;
+
+      for (let i = 0; i < lines.length; i++) {
+        ensureSpace(lineHeightPt);
+        doc.text(lines[i], x + indent, y);
+        y += lineHeightPt;
+      }
+    }
+
+    function writeSpace(mm) { y += mm; }
+
+    // Sección H2 (título de sección)
+    function writeSectionTitle(text) {
+      ensureSpace(14);
+      writeSpace(4);
+      // Bloque violeta
+      doc.setFillColor(...COLOR_BRAND);
+      doc.rect(MARGIN_X, y - 4, CONTENT_W, 8.5, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(255, 255, 255);
+      doc.text(clean(text), MARGIN_X + 3, y + 1.5);
+      y += 8;
+      writeSpace(4);
+    }
+
+    // Subsección (h3)
+    function writeSubsection(text) {
+      ensureSpace(8);
+      writeSpace(2);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(...COLOR_BRAND);
+      ensureSpace(5);
+      doc.text(clean(text), MARGIN_X, y);
+      y += 5;
+    }
+
+    // Campo: label + valor (con manejo de "sin respuesta" en gris)
+    function writeField(label, value, opts = {}) {
+      const labelOpts = { size: 9, color: COLOR_INK2, font: 'helvetica', style: 'bold' };
+      const isEmpty = !value || value === '(sin respuesta)' || (Array.isArray(value) && value.length === 0);
+      const valColor = isEmpty ? COLOR_GRAY_LIGHT : COLOR_INK;
+      const valStyle = isEmpty ? 'italic' : 'normal';
+      const displayVal = isEmpty ? '(sin respuesta)' : (Array.isArray(value) ? value.join(', ') : String(value));
+
+      ensureSpace(6);
+      writeText(label, labelOpts);
+      writeText(displayVal, { size: 10, color: valColor, style: valStyle, indent: 4 });
+      writeSpace(1.5);
+    }
+
+    // Campo multi-línea (textarea con saltos)
+    function writeFieldBlock(label, value) {
+      const isEmpty = !value || value === '(sin respuesta)';
+      const displayVal = isEmpty ? '(sin respuesta)' : String(value);
+      const valColor = isEmpty ? COLOR_GRAY_LIGHT : COLOR_INK;
+      const valStyle = isEmpty ? 'italic' : 'normal';
+
+      ensureSpace(8);
+      writeText(label, { size: 9, color: COLOR_INK2, style: 'bold' });
+      writeSpace(0.5);
+      writeText(displayVal, { size: 10, color: valColor, style: valStyle, indent: 4 });
+      writeSpace(2);
+    }
+
+    // Línea separadora interna
+    function writeDivider() {
+      ensureSpace(4);
+      doc.setDrawColor(...COLOR_LINE);
+      doc.setLineWidth(0.2);
+      doc.line(MARGIN_X, y, PAGE_W - MARGIN_X, y);
+      writeSpace(3);
+    }
+
+    // ===== PÁGINA 1: CUBIERTA =====
+    const fecha = new Date().toLocaleDateString('es-AR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+    // Banda violeta superior
+    doc.setFillColor(...COLOR_BRAND);
+    doc.rect(0, 0, PAGE_W, 60, 'F');
+
+    // Texto "SolvAI" en banda
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22);
+    doc.setTextColor(255, 255, 255);
+    doc.text('SolvAI', MARGIN_X, 28);
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.text('TECH CONSULTING', MARGIN_X, 35);
+
+    // Banda warm decorativa
+    doc.setFillColor(...COLOR_WARM);
+    doc.rect(0, 60, PAGE_W, 3, 'F');
+
+    // Título principal
+    y = 90;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(24);
+    doc.setTextColor(...COLOR_INK);
+    doc.text('Briefing Bot WhatsApp', MARGIN_X, y);
+    y += 11;
+
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...COLOR_INK2);
+    doc.text('Dichini Events Studio', MARGIN_X, y);
+    y += 18;
+
+    // Metadata card
+    doc.setFillColor(250, 250, 251);
+    doc.setDrawColor(...COLOR_LINE);
+    doc.roundedRect(MARGIN_X, y, CONTENT_W, 38, 2, 2, 'FD');
+    doc.setFontSize(9);
+    doc.setTextColor(...COLOR_MUTED);
+    doc.setFont('helvetica', 'normal');
+    doc.text('CLIENTE', MARGIN_X + 5, y + 8);
+    doc.text('GENERADO', MARGIN_X + 5, y + 19);
+    doc.text('PARA', MARGIN_X + 5, y + 30);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.setTextColor(...COLOR_INK);
+    doc.text('Oriana - Dichini Events Studio', MARGIN_X + 40, y + 8);
+    doc.text(fecha, MARGIN_X + 40, y + 19);
+    doc.text('Mateo - SolvAI', MARGIN_X + 40, y + 30);
+    y += 50;
+
+    // Resumen de completitud
+    let filled = 0;
+    Object.values(sectionFields).forEach(fields => {
+      fields.forEach(f => { if (isFilled(f)) filled++; });
+    });
+    const pct = Math.round((filled / TOTAL_FIELDS) * 100);
+
+    doc.setFillColor(...COLOR_BRAND);
+    doc.roundedRect(MARGIN_X, y, CONTENT_W, 28, 2, 2, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(28);
+    doc.setTextColor(255, 255, 255);
+    doc.text(`${pct}%`, MARGIN_X + 8, y + 18);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.text('completado', MARGIN_X + 8 + 22, y + 14);
+    doc.setFontSize(9);
+    doc.text(`${filled} de ${TOTAL_FIELDS} campos cargados`, MARGIN_X + 8 + 22, y + 20);
+    y += 36;
+
+    // Contexto al pie de la cubierta
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(9);
+    doc.setTextColor(...COLOR_MUTED);
+    const contexto = clean('Estudio de organización integral de eventos sociales y corporativos en Salta, Argentina. Cumples infantiles temáticos, cumples de 15, casamientos, eventos corporativos. Ticket promedio $320k - $1.5M ARS. WhatsApp + IG @dichini.events como canales principales.');
+    const cLines = doc.splitTextToSize(contexto, CONTENT_W);
+    cLines.forEach(l => { doc.text(l, MARGIN_X, y); y += 4.5; });
+
+    drawFooter();
+
+    // ===== SECCIÓN 1 — DATOS DEL NEGOCIO =====
+    doc.addPage();
+    pageNum++;
+    y = MARGIN_TOP;
+    drawHeader(false);
+
+    writeSectionTitle('1 · Datos del negocio');
+    writeField('Presentación del bot', v('bot_presentacion'));
+    writeField('WhatsApp de Oriana', v('oriana_wpp'));
+    writeField('WhatsApp que usará el bot', v('bot_wpp'));
+    writeField('Instagram', v('instagram'));
+    writeField('Horarios de Oriana', v('horario_oriana'));
+    writeField('Horarios sin bot autónomo', v('horario_no_bot'));
+
+    writeSpace(2);
+    writeSubsection('Equipo y freelancers');
+    const equipo = (data.equipo_personas || []).filter(p => p.nombre || p.rol);
+    if (equipo.length === 0) {
+      writeText('(sin personas cargadas)', { size: 10, color: COLOR_GRAY_LIGHT, style: 'italic', indent: 4 });
+    } else {
+      equipo.forEach((p, i) => {
+        const txt = `${i + 1}. ${p.nombre || '?'} — ${p.rol || '?'}${p.wpp ? ' — ' + p.wpp : ''}`;
+        writeText(txt, { size: 10, indent: 4 });
+      });
+    }
+
+    // ===== SECCIÓN 2 — VOZ =====
+    writeSectionTitle('2 · Voz y forma de hablar  ⚡ CRÍTICO');
+
+    const audio1OK = isFilled('audio_mama_enviado');
+    const audio2OK = isFilled('audio_empresa_enviado');
+    const capturasOK = isFilled('capturas_enviadas');
+
+    writeText(`🎤 AUDIO 1 (saludo a mamá): ${audio1OK ? '✓ ENVIADO POR WHATSAPP' : '✗ pendiente'}`,
+      { size: 10, style: 'bold', color: audio1OK ? [22, 163, 74] : [220, 38, 38] });
+    writeFieldBlock('Texto de respaldo audio 1', v('audio_saludo_mama_texto'));
+
+    writeText(`🎤 AUDIO 2 (saludo a empresa): ${audio2OK ? '✓ ENVIADO POR WHATSAPP' : '✗ pendiente'}`,
+      { size: 10, style: 'bold', color: audio2OK ? [22, 163, 74] : [220, 38, 38] });
+    writeFieldBlock('Texto de respaldo audio 2', v('audio_saludo_empresa_texto'));
+
+    writeText(`📸 CAPTURAS REALES: ${capturasOK ? '✓ ENVIADAS POR WHATSAPP' : '✗ pendientes'}`,
+      { size: 10, style: 'bold', color: capturasOK ? [22, 163, 74] : [220, 38, 38] });
+    writeSpace(3);
+
+    writeFieldBlock('Despedida típica', v('despedida'));
+    writeFieldBlock('Frases que SÍ usa siempre', v('frases_si'));
+    writeFieldBlock('Frases que NUNCA debe usar el bot', v('frases_no'));
+    writeField('Trato (vos/usted)', v('trato'));
+    writeField('Uso de emojis', v('emojis'));
+    writeField('Emojis favoritos', v('emojis_favoritos'));
+    writeField('Cómo le dicen los clientes', v('como_te_llaman'));
+    writeFieldBlock('Cliente "modelo ideal"', v('cliente_modelo'));
+
+    // ===== SECCIÓN 3 — CLIENTES =====
+    writeSectionTitle('3 · Clientes y filtrado');
+    writeFieldBlock('Tipos de cliente recibidos', v('tipos_cliente'));
+    writeFieldBlock('🚫 Filtros automáticos (no derivar)', v('no_atender'));
+    writeFieldBlock('Otros casos a descartar', v('no_atender_otros'));
+    writeFieldBlock('Señales de cliente VIP', v('senales_vip'));
+    writeFieldBlock('Señales de cliente complicado', v('senales_complicado'));
+    writeFieldBlock('Clientes que SIEMPRE van directo a Oriana', v('clientes_directos'));
+
+    // ===== SECCIÓN 4 — PRECIOS =====
+    writeSectionTitle('4 · Precios y paquetes');
+
+    writeSubsection('Cumples infantiles');
+    writeField('Chico (20-30 chicos)', v('precio_infantil_chico'));
+    writeField('Mediano (40-50 chicos)', v('precio_infantil_mediano'));
+    writeField('Grande (60+ chicos)', v('precio_infantil_grande'));
+
+    writeSubsection('Cumples de 15');
+    writeFieldBlock('Rangos', v('precio_15'));
+
+    writeSubsection('Casamientos');
+    writeFieldBlock('Rangos', v('precio_casamiento'));
+
+    writeSubsection('Corporativos');
+    writeFieldBlock('Cómo cotizar', v('precio_corporativo'));
+
+    writeSubsection('Reglas de cotización del bot');
+    writeField('Modo de precios', v('bot_precios_modo'));
+    writeField('Monto desde el que escala', v('precio_escala'));
+    writeFieldBlock('Política de descuentos', v('descuentos'));
+    writeFieldBlock('Forma de pago estándar', v('forma_pago'));
+
+    // ===== SECCIÓN 5 — FAQs =====
+    writeSectionTitle('5 · Preguntas frecuentes (respuestas de Oriana)');
+    const faqs = [
+      ['"¿Cuánto sale un cumple para X chicos?"', 'faq_cuanto_sale'],
+      ['"¿Tenés disponible para el [fecha]?"', 'faq_disponibilidad'],
+      ['"¿Qué incluye el servicio?"', 'faq_que_incluye'],
+      ['"¿Puedo ver fotos de eventos previos?"', 'faq_fotos'],
+      ['"¿Cuánto hay que pagar para reservar?"', 'faq_sena'],
+      ['"¿Cuánto antes hay que avisar?"', 'faq_anticipacion'],
+      ['"¿Trabajás en otras ciudades?"', 'faq_otras_ciudades'],
+      ['"¿Hacés solo mesa dulce / cosas sueltas?"', 'faq_solo_mesa'],
+      ['"¿Tenés temática X disponible?"', 'faq_tematicas'],
+      ['"¿Hay descuentos / promos?"', 'faq_descuentos'],
+      ['"¿Me pasás presupuesto por escrito?"', 'faq_presupuesto'],
+      ['"Lo pienso y te aviso"', 'faq_lo_pienso'],
+    ];
+    faqs.forEach(([q, k]) => {
+      writeText(`Q: ${q}`, { size: 9, style: 'bold', color: COLOR_BRAND });
+      writeText(`A: ${v(k)}`, { size: 10, color: isFilled(k) ? COLOR_INK : COLOR_GRAY_LIGHT,
+        style: isFilled(k) ? 'normal' : 'italic', indent: 4 });
+      writeSpace(2);
+    });
+    writeFieldBlock('Otras preguntas frecuentes', v('faq_extra'));
+
+    // ===== SECCIÓN 6 — PROCESO DE VENTA =====
+    writeSectionTitle('6 · Proceso de venta y objeciones');
+    writeFieldBlock('Datos mínimos antes de cotizar', v('datos_minimos'));
+    writeFieldBlock('Cuándo pasar a llamada/reunión', v('momento_llamada'));
+    writeField('Tiempo antes de follow-up', v('tiempo_followup'));
+    writeField('Cantidad de follow-ups', v('cantidad_followups'));
+    writeFieldBlock('Mensaje de follow-up (lead frío)', v('mensaje_followup'));
+
+    writeSubsection('Objeciones y respuestas');
+    const objs = [
+      ['"Está muy caro / No me da el presupuesto"', 'obj_caro'],
+      ['"Estoy consultando con otros"', 'obj_otros'],
+      ['"Descuento si pago contado"', 'obj_contado'],
+      ['"Lo consulto con mi marido/familia"', 'obj_consultar'],
+      ['Regateo', 'obj_regateo'],
+      ['Otras objeciones', 'obj_extra'],
+    ];
+    objs.forEach(([q, k]) => {
+      writeText(`→ ${q}`, { size: 9, style: 'bold', color: COLOR_INK2 });
+      writeText(v(k), { size: 10, color: isFilled(k) ? COLOR_INK : COLOR_GRAY_LIGHT,
+        style: isFilled(k) ? 'normal' : 'italic', indent: 4 });
+      writeSpace(2);
+    });
+
+    // ===== SECCIÓN 7 — REGLAS DEL BOT =====
+    writeSectionTitle('7 · Reglas del bot');
+    writeField('Nivel de autonomía', v('bot_autonomia'));
+    writeField('Aviso a Oriana (modo)', v('bot_aviso_modo'));
+    writeField('Fuera de horario', v('bot_fuera_horario'));
+    writeField('Guardar base de clientes', v('bot_guarda_db'));
+    writeFieldBlock('🔴 El bot SIEMPRE deriva cuando', v('bot_deriva_siempre'));
+    writeFieldBlock('🚫 El bot NUNCA debe', v('bot_nunca'));
+
+    // ===== SECCIÓN 8 — COBRANZAS =====
+    writeSectionTitle('8 · Cobranzas y postventa');
+    writeFieldBlock('Mensaje de seña (al confirmar)', v('msg_sena'));
+    writeField('Insistencia por seña', v('insistir_sena'));
+    writeFieldBlock('Mensaje de insistencia', v('msg_insistencia_sena'));
+    writeField('Días antes para recordar saldo', v('dias_antes_saldo'));
+    writeFieldBlock('Mensaje de saldo', v('msg_saldo'));
+    writeField('Días después para pedir feedback', v('dias_feedback'));
+    writeFieldBlock('Mensaje de pedido de reseña', v('msg_resena'));
+    writeField('Ante feedback malo', v('bot_feedback_malo'));
+
+    // ===== SECCIÓN 9 — PROACTIVOS =====
+    writeSectionTitle('9 · Mensajes proactivos  (Fase 2 sugerida)');
+    writeField('Saludar cumpleaños de cliente', v('bot_saluda_cumple_cliente'));
+    writeFieldBlock('Mensaje de cumple', v('msg_cumple'));
+    writeFieldBlock('Fechas especiales activas', v('fechas_especiales'));
+    writeFieldBlock('Reactivación de clientes viejos', v('reactivacion_viejos'));
+    writeField('Política de promociones', v('promos'));
+
+    // ===== SECCIÓN 10 — COPILOTO =====
+    writeSectionTitle('10 · Copiloto personal de Oriana  (Fase 2 sugerida)');
+    writeFieldBlock('Funciones que quiere', v('copiloto_funciones'));
+    writeField('Tono del copiloto', v('copiloto_tono'));
+    writeField('Resumen diario', v('resumen_diario'));
+    writeFieldBlock('Cosas a NO recordar', v('no_recordar'));
+
+    // ===== SECCIÓN 11 — CIERRE =====
+    writeSectionTitle('11 · Cierre y notas adicionales');
+    writeFieldBlock('Algo más que el bot debe saber', v('extra'));
+    writeFieldBlock('Sello único de Dichini', v('sello_unico'));
+    writeFieldBlock('Planes a futuro', v('futuro'));
+    writeFieldBlock('Observaciones sobre clientes', v('observaciones_clientes'));
+
+    // ===== PRÓXIMOS PASOS =====
+    writeSectionTitle('Próximos pasos para Mateo');
+    const pasos = [
+      '1. Procesar audios y capturas enviadas por WhatsApp por Oriana',
+      '2. Limpiar datos sensibles de las capturas',
+      '3. Identificar respuestas marcadas como "DECIDILO_MATEO" y definirlas',
+      '4. Entrenar bot Fase 1: atención + cobranza + escalamiento',
+      '5. Test interno con Oriana antes de activar a clientes',
+      '6. Fase 2 al mes 1-2: proactivos + copiloto personal'
+    ];
+    pasos.forEach(p => {
+      writeText(p, { size: 10, color: COLOR_INK2 });
+      writeSpace(1);
+    });
+
+    // Footer último
+    drawFooter();
+
+    // Descargar
+    doc.save('briefing_bot_dichini_events.pdf');
+  }
+
+  function triggerDownload(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function v(k) {
+    const val = data[k];
+    if (val === undefined || val === null || val === '') return '(sin respuesta)';
+    if (Array.isArray(val)) return val.length === 0 ? '(sin respuesta)' : val.join(', ');
+    return val;
+  }
+
+  function buildBriefingText() {
+    const equipoTxt = (data.equipo_personas || []).filter(p => p.nombre || p.rol).map((p, i) =>
+      `   ${i+1}. ${p.nombre || '?'} — ${p.rol || '?'}${p.wpp ? ' — ' + p.wpp : ''}`
+    ).join('\n') || '   (sin personas cargadas)';
+
+    const fecha = new Date().toLocaleDateString('es-AR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+    return `═══════════════════════════════════════════════════════════════════════
+BRIEFING BOT WHATSAPP — DICHINI EVENTS STUDIO
+Cliente: Oriana · Generado: ${fecha}
+SolvAI Tech Consulting · Mateo
+═══════════════════════════════════════════════════════════════════════
+
+CONTEXTO
+─────────
+Estudio de organización integral de eventos sociales y corporativos en
+Salta, Argentina. Cumples infantiles temáticos, cumples de 15,
+casamientos, eventos corporativos. Ticket promedio $320k - $1.5M ARS.
+50% seña + 50% saldo. WhatsApp + IG @dichini.events como canales
+principales. Equipo: Oriana (dueña), Mariana (deco), Carlos (montaje).
+
+═══════════════════════════════════════════════════════════════════════
+SECCIÓN 1 — DATOS DEL NEGOCIO
+═══════════════════════════════════════════════════════════════════════
+Presentación del bot:        ${v('bot_presentacion')}
+WhatsApp de Oriana:          ${v('oriana_wpp')}
+WhatsApp que usará el bot:   ${v('bot_wpp')}
+Instagram:                   ${v('instagram')}
+Horarios de Oriana:          ${v('horario_oriana')}
+Horarios sin bot autónomo:   ${v('horario_no_bot')}
+
+Equipo y freelancers:
+${equipoTxt}
+
+═══════════════════════════════════════════════════════════════════════
+SECCIÓN 2 — VOZ Y FORMA DE HABLAR ⚡ CRÍTICO
+═══════════════════════════════════════════════════════════════════════
+🎤 AUDIO 1 (saludo a mamá): ${v('audio_mama_enviado') !== '(sin respuesta)' ? '✅ ENVIADO POR WHATSAPP' : '❌ pendiente'}
+   Texto de respaldo: ${v('audio_saludo_mama_texto')}
+
+🎤 AUDIO 2 (saludo a empresa): ${v('audio_empresa_enviado') !== '(sin respuesta)' ? '✅ ENVIADO POR WHATSAPP' : '❌ pendiente'}
+   Texto de respaldo: ${v('audio_saludo_empresa_texto')}
+
+📸 CAPTURAS REALES: ${v('capturas_enviadas') !== '(sin respuesta)' ? '✅ ENVIADAS POR WHATSAPP' : '❌ pendientes'}
+
+Despedida típica:
+   ${v('despedida')}
+
+Frases que SÍ usa siempre:
+${v('frases_si')}
+
+Frases que NUNCA debe usar el bot:
+${v('frases_no')}
+
+Trato (vos/usted):           ${v('trato')}
+Uso de emojis:               ${v('emojis')}
+Emojis favoritos:            ${v('emojis_favoritos')}
+Cómo le dicen los clientes:  ${v('como_te_llaman')}
+
+Cliente "modelo ideal":
+   ${v('cliente_modelo')}
+
+═══════════════════════════════════════════════════════════════════════
+SECCIÓN 3 — CLIENTES Y FILTRADO
+═══════════════════════════════════════════════════════════════════════
+Tipos de cliente recibidos:
+${v('tipos_cliente')}
+
+🚫 FILTROS AUTOMÁTICOS (no derivar a Oriana):
+${v('no_atender')}
+
+Otros casos a descartar:
+   ${v('no_atender_otros')}
+
+Señales de cliente VIP:
+${v('senales_vip')}
+
+Señales de cliente complicado:
+${v('senales_complicado')}
+
+Clientes que SIEMPRE deben ir directo a Oriana:
+   ${v('clientes_directos')}
+
+═══════════════════════════════════════════════════════════════════════
+SECCIÓN 4 — PRECIOS Y PAQUETES
+═══════════════════════════════════════════════════════════════════════
+CUMPLES INFANTILES
+  Chico (20-30 chicos):      ${v('precio_infantil_chico')}
+  Mediano (40-50 chicos):    ${v('precio_infantil_mediano')}
+  Grande (60+ chicos):       ${v('precio_infantil_grande')}
+
+CUMPLES DE 15:
+${v('precio_15')}
+
+CASAMIENTOS:
+${v('precio_casamiento')}
+
+CORPORATIVOS:
+${v('precio_corporativo')}
+
+REGLAS DE COTIZACIÓN DEL BOT:
+  Modo de precios:           ${v('bot_precios_modo')}
+  Monto desde el que escala: ${v('precio_escala')}
+
+Política de descuentos:
+${v('descuentos')}
+
+Forma de pago estándar:
+${v('forma_pago')}
+
+═══════════════════════════════════════════════════════════════════════
+SECCIÓN 5 — PREGUNTAS FRECUENTES (RESPUESTAS DE ORIANA)
+═══════════════════════════════════════════════════════════════════════
+Q: "¿Cuánto sale un cumple para X chicos?"
+A: ${v('faq_cuanto_sale')}
+
+Q: "¿Tenés disponible para el [fecha]?"
+A: ${v('faq_disponibilidad')}
+
+Q: "¿Qué incluye el servicio?"
+A: ${v('faq_que_incluye')}
+
+Q: "¿Puedo ver fotos de eventos previos?"
+A: ${v('faq_fotos')}
+
+Q: "¿Cuánto hay que pagar para reservar?"
+A: ${v('faq_sena')}
+
+Q: "¿Cuánto antes hay que avisar?"
+A: ${v('faq_anticipacion')}
+
+Q: "¿Trabajás en otras ciudades?"
+A: ${v('faq_otras_ciudades')}
+
+Q: "¿Hacés solo mesa dulce / cosas sueltas?"
+A: ${v('faq_solo_mesa')}
+
+Q: "¿Tenés temática X disponible?"
+A: ${v('faq_tematicas')}
+
+Q: "¿Hay descuentos / promos?"
+A: ${v('faq_descuentos')}
+
+Q: "¿Me pasás presupuesto por escrito?"
+A: ${v('faq_presupuesto')}
+
+Q: "Lo pienso y te aviso"
+A: ${v('faq_lo_pienso')}
+
+Otras preguntas frecuentes:
+${v('faq_extra')}
+
+═══════════════════════════════════════════════════════════════════════
+SECCIÓN 6 — PROCESO DE VENTA Y OBJECIONES
+═══════════════════════════════════════════════════════════════════════
+Datos mínimos antes de cotizar:
+${v('datos_minimos')}
+
+Cuándo pasar de WhatsApp a llamada/reunión:
+   ${v('momento_llamada')}
+
+Tiempo antes de hacer follow-up:  ${v('tiempo_followup')}
+Cantidad de follow-ups:           ${v('cantidad_followups')}
+
+Mensaje de follow-up (lead frío):
+   ${v('mensaje_followup')}
+
+OBJECIONES Y RESPUESTAS:
+
+→ "Está muy caro / No me da el presupuesto":
+   ${v('obj_caro')}
+
+→ "Estoy consultando con otros":
+   ${v('obj_otros')}
+
+→ "Descuento si pago contado":
+   ${v('obj_contado')}
+
+→ "Lo consulto con mi marido/familia":
+   ${v('obj_consultar')}
+
+→ Regateo:
+   ${v('obj_regateo')}
+
+→ Otras objeciones:
+   ${v('obj_extra')}
+
+═══════════════════════════════════════════════════════════════════════
+SECCIÓN 7 — REGLAS DEL BOT
+═══════════════════════════════════════════════════════════════════════
+Nivel de autonomía:          ${v('bot_autonomia')}
+Aviso a Oriana (modo):       ${v('bot_aviso_modo')}
+Fuera de horario:            ${v('bot_fuera_horario')}
+Guardar base de clientes:    ${v('bot_guarda_db')}
+
+🔴 EL BOT SIEMPRE DERIVA cuando:
+${v('bot_deriva_siempre')}
+
+🚫 EL BOT NUNCA DEBE:
+${v('bot_nunca')}
+
+═══════════════════════════════════════════════════════════════════════
+SECCIÓN 8 — COBRANZAS Y POSTVENTA
+═══════════════════════════════════════════════════════════════════════
+MENSAJE DE SEÑA (al confirmar):
+${v('msg_sena')}
+
+Insistencia por seña:        ${v('insistir_sena')}
+Mensaje de insistencia:
+   ${v('msg_insistencia_sena')}
+
+Días antes del evento para recordar saldo: ${v('dias_antes_saldo')}
+Mensaje de saldo:
+   ${v('msg_saldo')}
+
+Días después del evento para pedir feedback: ${v('dias_feedback')}
+
+MENSAJE DE PEDIDO DE RESEÑA EN GOOGLE:
+${v('msg_resena')}
+
+Comportamiento ante feedback malo: ${v('bot_feedback_malo')}
+
+═══════════════════════════════════════════════════════════════════════
+SECCIÓN 9 — MENSAJES PROACTIVOS (Fase 2 sugerida)
+═══════════════════════════════════════════════════════════════════════
+Saludar cumpleaños de cliente:  ${v('bot_saluda_cumple_cliente')}
+
+Mensaje de cumple:
+   ${v('msg_cumple')}
+
+Fechas especiales activas:
+${v('fechas_especiales')}
+
+Reactivación de clientes viejos:
+   ${v('reactivacion_viejos')}
+
+Política de promociones:        ${v('promos')}
+
+═══════════════════════════════════════════════════════════════════════
+SECCIÓN 10 — COPILOTO PERSONAL DE ORIANA (Fase 2 sugerida)
+═══════════════════════════════════════════════════════════════════════
+Funciones que quiere:
+${v('copiloto_funciones')}
+
+Tono del copiloto:           ${v('copiloto_tono')}
+Resumen diario:              ${v('resumen_diario')}
+
+Cosas a NO recordar:
+   ${v('no_recordar')}
+
+═══════════════════════════════════════════════════════════════════════
+SECCIÓN 11 — CIERRE Y NOTAS ADICIONALES
+═══════════════════════════════════════════════════════════════════════
+Algo más que el bot debe saber:
+${v('extra')}
+
+Sello único de Dichini:
+${v('sello_unico')}
+
+Planes a futuro:
+${v('futuro')}
+
+Observaciones sobre clientes:
+${v('observaciones_clientes')}
+
+═══════════════════════════════════════════════════════════════════════
+FIN DEL BRIEFING
+
+🎯 PRÓXIMOS PASOS PARA MATEO:
+1. Procesar audios y capturas enviadas por WhatsApp por Oriana
+2. Limpiar datos sensibles de las capturas
+3. Identificar respuestas marcadas como "DECIDILO_MATEO" y definirlas
+4. Entrenar bot Fase 1: atención + cobranza + escalamiento
+5. Test interno con Oriana antes de activar a clientes
+6. Fase 2 al mes 1-2: proactivos + copiloto personal
+═══════════════════════════════════════════════════════════════════════
+`;
+  }
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  loadData();
+  if (!Array.isArray(data.equipo_personas) || data.equipo_personas.length === 0) {
+    data.equipo_personas = [
+      { nombre: 'Mariana', rol: 'Decoradora freelance', wpp: '' },
+      { nombre: 'Carlos', rol: 'Flete y montaje', wpp: '' }
+    ];
+  }
+  renderRepeater('equipo');
+  hydrateFields();
+  attachListeners();
+  updateProgress();
+
+  // Sidebar click navigation
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const idx = parseInt(item.dataset.section);
+      goToSection(idx);
+    });
+  });
+
+  // Close modal on backdrop click
+  document.getElementById('exportModal').addEventListener('click', (e) => {
+    if (e.target.id === 'exportModal') closeExportModal();
+  });
+
+  // Expose functions for inline onclick handlers
+  window.goToSection = goToSection;
+  window.addRepeaterItem = addRepeaterItem;
+  window.removeRepeaterItem = removeRepeaterItem;
+  window.updateRepeater = updateRepeater;
+  window.openExportModal = openExportModal;
+  window.closeExportModal = closeExportModal;
+  window.downloadJSON = downloadJSON;
+  window.downloadTXT = downloadTXT;
+  window.downloadPDF = downloadPDF;
+</script>
+
+</body>
+</html>
